@@ -153,6 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const akiraAudio = new Audio('Akira.mp3');
     akiraAudio.preload = 'auto';
 
+    const chillMusicAudio = new Audio('chill work music.mp3');
+    chillMusicAudio.preload = 'auto';
+    chillMusicAudio.loop = true;
+
     // State definition & order enforcement
     const STATES = {
         IDLE: 'idle',
@@ -191,6 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
             akiraAudio.currentTime = 0;
             akiraAudio.onended = null;
             akiraAudio.onerror = null;
+        }
+        if (chillMusicAudio) {
+            chillMusicAudio.pause();
+            chillMusicAudio.currentTime = 0;
         }
     }
 
@@ -314,6 +322,16 @@ document.addEventListener('DOMContentLoaded', () => {
             case STATES.PLAYING:
                 /* PACING CHOICE: ~800ms delay after akira.mp3 finishes before option buttons and now-playing reveal */
                 akiraImg.src = 'idle.png';
+                if (chillMusicAudio) {
+                    chillMusicAudio.currentTime = 0;
+                    chillMusicAudio.loop = true;
+                    const playPromise = chillMusicAudio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => {
+                            console.warn('chill work music playback error or user interaction required:', err);
+                        });
+                    }
+                }
                 optionsTimer = setTimeout(() => {
                     container.classList.add('options-active');
                 }, 800);
