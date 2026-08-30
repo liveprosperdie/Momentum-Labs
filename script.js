@@ -94,10 +94,10 @@ function updateImage(scrollTop) {
     imageObj.frame = frameIndex;
     render();
 
-    // InteractiveTrial mounts and becomes interactive only after Video 2 final frame is reached (scrollFraction >= 1.0)
+    // InteractiveTrial mounts and becomes interactive only after Video 2 final frame is reached
     const trialContainer = document.getElementById('interactive-trial');
     if (trialContainer) {
-        if (scrollFraction >= 0.999 || scrollTop >= maxScroll - 4) {
+        if (scrollFraction >= 0.985 || scrollTop >= maxScroll - 30) {
             trialContainer.classList.add('scroll-complete');
         } else {
             trialContainer.classList.remove('scroll-complete');
@@ -107,6 +107,19 @@ function updateImage(scrollTop) {
         }
     }
 }
+
+// Nav DEMO button handler -> Smoothly scroll to bottom and activate demo
+document.addEventListener('DOMContentLoaded', () => {
+    const demoLinks = document.querySelectorAll('a[href="#demo"]');
+    demoLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+        });
+    });
+});
+
 window.addEventListener('resize', () => {
     setCanvasSize();
 });
