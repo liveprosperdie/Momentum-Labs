@@ -498,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const likeBtn = document.getElementById('akira-like-btn');
     const likeCountDisplay = document.getElementById('like-count-display');
     const cardFrame = document.querySelector('.akira-card-frame');
-    const cardHero = document.querySelector('.akira-card-hero');
+    const cardHero = document.getElementById('akira-card-hero');
 
     function triggerInstaHeartPop() {
         if (!cardFrame) return;

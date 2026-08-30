@@ -125,359 +125,10 @@
         }
 
         .akira-standalone-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .akira-card-frame {
             position: relative;
-            width: min(90vw, 400px);
-            aspect-ratio: 9 / 14;
-            border-radius: 28px;
-            overflow: hidden;
-            background: #000000;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-        }
-
-        .akira-card-frame:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 32px 90px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .akira-card-bg-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-
-        .akira-card-overlay-gradient {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.85) 85%, #000000 100%);
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .akira-card-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 24px 28px 28px 28px;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-sizing: border-box;
-        }
-
-        .akira-card-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-        }
-
-        .akira-card-meta-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 8px #22c55e;
-        }
-
-        .akira-card-header-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .akira-card-title-text {
-            font-size: 32px;
-            font-weight: bold;
-            color: #ffffff;
-            letter-spacing: -0.01em;
-            font-family: 'Hagrid', sans-serif;
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-            user-select: none;
-        }
-
-        .akira-card-title-text::after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(220, 190, 160, 0.9) 100%);
-            border-radius: 1px;
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .akira-card-title-text:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
-        }
-
-        .akira-card-title-text:hover::after {
-            width: 100%;
-        }
-
-        .akira-card-dropdown-toggle {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
             display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #ffffff;
-            transition: transform 0.25s ease, background 0.2s ease;
-            padding: 0;
-        }
-
-        .akira-card-dropdown-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .akira-card-dropdown-toggle[aria-expanded="true"] {
-            transform: rotate(180deg);
-            background: #ffffff;
-            color: #000000;
-        }
-
-        .chevron-icon {
-            width: 18px;
-            height: 18px;
-        }
-
-        .akira-card-tagline {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.92);
-            line-height: 1.4;
-            font-family: 'Satoshi', sans-serif;
-            font-weight: 600;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-            margin-bottom: 6px;
-        }
-
-        .akira-card-dropdown-panel {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
-            margin: 0;
-        }
-
-        .akira-card-dropdown-panel:not([hidden]) {
-            max-height: 280px;
-            opacity: 1;
-            margin-top: 8px;
-            margin-bottom: 10px;
-        }
-
-        .akira-traits-list {
-            list-style: none;
-            padding: 12px 16px;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 13.5px;
-            color: #ffffff;
-            font-weight: 500;
-            display: flex;
             flex-direction: column;
-            gap: 8px;
-            text-align: left;
-            line-height: 1.4;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-
-        .akira-traits-list span {
-            color: #60a5fa;
-            font-weight: 700;
-        }
-
-        .akira-card-footer {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 6px;
-        }
-
-        .akira-card-metrics {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: #ffffff;
-            font-size: 17px;
-            font-weight: 700;
-            font-family: 'Satoshi', sans-serif;
-        }
-
-        .metric-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-        }
-
-        .metric-like-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 4px 10px;
-            border-radius: 20px;
-            transition: transform 0.2s ease, background 0.2s ease;
-            font-family: inherit;
-            font-size: inherit;
-            font-weight: inherit;
-        }
-
-        .metric-like-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
-            transform: scale(1.08);
-        }
-
-        .metric-like-btn:focus-visible {
-            outline: 2px solid #ffffff;
-            outline-offset: 2px;
-        }
-
-        .heart-icon-svg {
-            width: 22px;
-            height: 22px;
-            fill: none;
-            stroke: #ffffff;
-            stroke-width: 2.2;
-            transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
-        }
-
-        .metric-like-btn.liked .heart-icon-svg {
-            fill: #ef4444;
-            stroke: #ef4444;
-            filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
-            animation: heartBeat 0.35s ease;
-        }
-
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.35); }
-            100% { transform: scale(1); }
-        }
-
-        .insta-pop-heart {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 90px;
-            height: 90px;
-            z-index: 10;
-            pointer-events: none;
-            animation: instaPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        .insta-pop-heart svg {
-            width: 100%;
-            height: 100%;
-            fill: #ef4444;
-            filter: drop-shadow(0 8px 24px rgba(239, 68, 68, 0.6));
-        }
-
-        @keyframes instaPop {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            40% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-            70% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
-        }
-
-        .akira-waitlist-btn {
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 700;
-            font-family: 'Satoshi', sans-serif;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-            text-shadow: none;
-        }
-
-        .akira-waitlist-btn:hover {
-            background: #f0f0f0;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-        }
-
-        .side-bottom-teaser-wrap {
-            position: absolute;
-            left: calc(100% + 24px);
-            bottom: 28px;
-            white-space: nowrap;
-        }
-
-        .models-teaser-line {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Satoshi', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #000000;
-            user-select: none;
-        }
-
-        .teaser-pulse-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #000000;
-            display: inline-block;
-            animation: pulse-dot-black 1.8s infinite ease-in-out;
-        }
-
-        @keyframes pulse-dot-black {
-            0%, 100% { transform: scale(0.85); opacity: 0.4; }
-            50% { transform: scale(1.25); opacity: 1; }
-        }
-
-        @media (max-width: 900px) {
-            .side-bottom-teaser-wrap {
-                position: static;
-                margin-top: 18px;
-                display: flex;
-                justify-content: center;
-            }
         }
 
         /* ========================================================================= */
@@ -1157,14 +808,15 @@
                                 </svg>
                             </button>
                         </div>
-                        <p class="akira-card-tagline">Personal AI Companion &amp; Desktop OS Orchestrator</p>
+                        <p class="akira-card-tagline">Personal AI Partner | Living in your computer</p>
                         
+                        <!-- Dropdown Details Panel (Reveals Akira Personality Traits) -->
                         <div id="akira-card-dropdown-panel" class="akira-card-dropdown-panel" hidden>
                             <ul class="akira-traits-list">
-                                <li><span>Architecture:</span> Local-first neural agent runtime</li>
-                                <li><span>Autonomy:</span> 4 execution tiers (Free, Standard, Pro, Beta)</li>
-                                <li><span>Voice Loop:</span> Zero-latency duplex voice &amp; barge-in</li>
-                                <li><span>Integration:</span> Microsoft Office, Obsidian, Browser &amp; OS</li>
+                                <li><span>•</span> Warm, sharp partner — invested in your growth without sugarcoating</li>
+                                <li><span>•</span> Carries real context — remembers what you build, struggle with, &amp; win</li>
+                                <li><span>•</span> Calls out excuses plainly — dry-witted, direct, never customer-service robotic</li>
+                                <li><span>•</span> Adapts to your energy — crisp in work mode, relaxed when chilling, steady at 2am</li>
                             </ul>
                         </div>
                         
@@ -1181,14 +833,14 @@
                             </div>
                             <button id="products-waitlist-btn" class="akira-waitlist-btn">Join Waitlist +</button>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Side Bottom Teaser (Satoshi Bold & Small) -->
-                        <div class="side-bottom-teaser-wrap">
-                            <div class="models-teaser-line">
-                                <span class="teaser-pulse-dot"></span>
-                                <span>Other models coming soon</span>
-                            </div>
-                        </div>
+                <!-- Side Bottom Teaser (Placed outside card so it is not clipped) -->
+                <div class="side-bottom-teaser-wrap">
+                    <div class="models-teaser-line">
+                        <span class="teaser-pulse-dot"></span>
+                        <span>Other models coming soon</span>
                     </div>
                 </div>
             </div>

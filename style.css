@@ -722,22 +722,28 @@ body {
     backdrop-filter: blur(8px);
 }
 
+/* Akira Card Frame (Shared across index.html modal & products.html showcase) */
 .akira-card-frame {
     position: relative;
     z-index: 10;
-    width: 420px;
-    max-width: 92vw;
-    height: 600px;
-    max-height: 88vh;
-    border-radius: 32px;
+    width: min(90vw, 400px);
+    aspect-ratio: 9 / 14;
+    border-radius: 28px;
     overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
-    background: #0d0d11;
-    animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    background: #000000;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
     font-family: 'Satoshi', sans-serif;
-    display: flex;
-    flex-direction: column;
+}
+
+.akira-card-frame:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 90px rgba(0, 0, 0, 0.55), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.akira-modal .akira-card-frame {
+    animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .akira-modal-close {
@@ -776,41 +782,57 @@ body {
     stroke: #ffffff;
 }
 
-.akira-card-hero {
+.akira-card-bg-img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
     z-index: 1;
 }
 
-.akira-card-hero-img {
+.akira-card-overlay-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    image-rendering: pixelated;
-    display: block;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.85) 85%, #000000 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
-/* Dark Translucent Frosted Glass Blur Overlay Panel over bottom of hero image */
-.akira-card-overlay.frosted-blur {
+.akira-card-content {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 5;
-    padding: 26px 24px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.65) 75%, rgba(0, 0, 0, 0.25) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 24px 28px 28px 28px;
+    z-index: 3;
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.akira-card-meta {
+    display: flex;
+    align-items: center;
     gap: 8px;
-    color: #ffffff;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+}
+
+.akira-card-meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
 }
 
 .akira-card-header-row {
@@ -854,7 +876,6 @@ body {
     width: 100%;
 }
 
-/* Chevron Dropdown Toggle Button next to Akira's name */
 .akira-card-dropdown-toggle {
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.25);
@@ -895,7 +916,6 @@ body {
     margin-bottom: 6px;
 }
 
-/* Collapsible Dropdown Details Drawer */
 .akira-card-dropdown-panel {
     max-height: 0;
     overflow: hidden;
@@ -982,95 +1002,140 @@ body {
     outline-offset: 2px;
 }
 
-.metric-like-btn .heart-icon {
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+.heart-icon-svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2.2;
+    transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
 }
 
-.metric-like-btn.liked .heart-icon {
-    fill: url(#neonPinkGradient);
-    stroke: #ff2a85;
-    filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 20px rgba(255, 42, 133, 0.5));
-    transform: scale(1.25);
-    animation: heartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.metric-like-btn.liked .heart-icon-svg {
+    fill: #ef4444;
+    stroke: #ef4444;
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
+    animation: heartBeat 0.35s ease;
 }
 
-.metric-like-btn.liked {
-    color: #ff3399;
-    text-shadow: 0 0 12px rgba(255, 51, 153, 0.8);
-}
-
-@keyframes heartPop {
+@keyframes heartBeat {
     0% { transform: scale(1); }
-    50% { transform: scale(1.45); }
-    100% { transform: scale(1.25); }
+    50% { transform: scale(1.35); }
+    100% { transform: scale(1); }
 }
 
-/* Instagram Floating Pop Heart Burst Effect */
 .insta-pop-heart {
     position: absolute;
-    top: 42%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     width: 90px;
     height: 90px;
     z-index: 40;
     pointer-events: none;
-    animation: instaPopHeart 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    filter: drop-shadow(0 0 20px rgba(255, 0, 127, 0.95)) drop-shadow(0 0 35px rgba(255, 117, 140, 0.7));
+    animation: instaPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .insta-pop-heart svg {
     width: 100%;
     height: 100%;
-    fill: url(#neonPinkGradient);
-    stroke: #ff2a85;
-    stroke-width: 1.5;
+    fill: #ef4444;
+    filter: drop-shadow(0 8px 24px rgba(239, 68, 68, 0.6));
 }
 
-@keyframes instaPopHeart {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -40%) scale(0.2) rotate(-15deg);
-    }
-    35% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.4) rotate(0deg);
-    }
-    65% {
-        opacity: 0.95;
-        transform: translate(-50%, -70%) scale(1.2) rotate(10deg);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -120px) scale(0.85) rotate(-10deg);
-    }
-}
-
-.metric-icon {
-    width: 20px;
-    height: 20px;
-    opacity: 1;
-    stroke: #ffffff;
+@keyframes instaPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    40% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
 }
 
 .akira-waitlist-btn {
     background: #ffffff;
     color: #000000;
     border: none;
-    padding: 12px 26px;
-    border-radius: 32px;
-    font-family: 'Satoshi', sans-serif;
-    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: 700;
+    font-family: 'Satoshi', sans-serif;
     cursor: pointer;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-    transition: all 0.2s ease;
-    white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    text-shadow: none;
 }
 
 .akira-waitlist-btn:hover {
-    background: #f3f4f6;
-    transform: scale(1.04);
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.akira-standalone-wrap,
+.akira-modal-card-wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.side-bottom-teaser-wrap {
+    position: absolute;
+    left: calc(100% + 24px);
+    bottom: 28px;
+    white-space: nowrap;
+    z-index: 15;
+}
+
+.models-teaser-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #000000;
+    user-select: none;
+}
+
+.akira-modal .models-teaser-line {
+    color: #ffffff;
+}
+
+.teaser-pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #000000;
+    display: inline-block;
+    animation: pulse-dot-black 1.8s infinite ease-in-out;
+}
+
+.akira-modal .teaser-pulse-dot {
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    animation: pulse-dot-white 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-dot-black {
+    0%, 100% { transform: scale(0.85); opacity: 0.4; }
+    50% { transform: scale(1.25); opacity: 1; }
+}
+
+@keyframes pulse-dot-white {
+    0%, 100% { transform: scale(0.85); opacity: 0.4; }
+    50% { transform: scale(1.25); opacity: 1; }
+}
+
+@media (max-width: 900px) {
+    .side-bottom-teaser-wrap {
+        position: static;
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+    }
 }
 
 /* Reduced Motion Override */
