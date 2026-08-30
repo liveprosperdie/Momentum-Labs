@@ -82,22 +82,26 @@ window.addEventListener('scroll', () => {
 });
 
 function updateImage(scrollTop) {
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollFraction = maxScroll > 0 ? Math.max(0, Math.min(1, scrollTop / maxScroll)) : 0;
+    const scrollContainer = document.querySelector('.scroll-container');
+    const containerHeight = scrollContainer ? scrollContainer.offsetHeight : window.innerHeight * 5.0;
+    
+    // Allocate ~72% of the scroll track for the 234 video opening frames
+    const animScrollLimit = containerHeight * 0.72;
+    const animFraction = Math.max(0, Math.min(1, scrollTop / animScrollLimit));
 
     // Linear scroll progress mapped across all 234 frames
     const frameIndex = Math.min(
         frameCount - 1,
-        Math.floor(scrollFraction * frameCount)
+        Math.floor(animFraction * frameCount)
     );
 
     imageObj.frame = frameIndex;
     render();
 
-    // InteractiveTrial mounts and becomes interactive only after Video 2 final frame is reached
+    // InteractiveTrial mounts and becomes interactive once laptop is open
     const trialContainer = document.getElementById('interactive-trial');
     if (trialContainer) {
-        if (scrollFraction >= 0.985 || scrollTop >= maxScroll - 30) {
+        if (animFraction >= 0.98) {
             trialContainer.classList.add('scroll-complete');
         } else {
             trialContainer.classList.remove('scroll-complete');
@@ -108,16 +112,39 @@ function updateImage(scrollTop) {
     }
 }
 
-// Nav DEMO button handler -> Smoothly scroll to bottom and activate demo
+// Nav DEMO and ABOUT button handlers
 document.addEventListener('DOMContentLoaded', () => {
-    const demoLinks = document.querySelectorAll('a[href="#demo"]');
+    const demoLinks = document.querySelectorAll('a[href="#demo"], a[href="index.html#demo"]');
     demoLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+            const scrollContainer = document.querySelector('.scroll-container');
+            const target = scrollContainer ? scrollContainer.offsetHeight * 0.78 : window.innerHeight * 3.8;
+            window.scrollTo({ top: target, behavior: 'smooth' });
         });
     });
+
+    const aboutLinks = document.querySelectorAll('a[href="#about-masthead"], a[href="index.html#about-masthead"]');
+    aboutLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const masthead = document.getElementById('about-masthead');
+            if (masthead) {
+                e.preventDefault();
+                masthead.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Observe about masthead to hide floating demo controls when footer is in view
+    const aboutMasthead = document.getElementById('about-masthead');
+    if (aboutMasthead && 'IntersectionObserver' in window) {
+        const mastheadObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                document.body.classList.toggle('in-masthead-view', entry.isIntersecting);
+            });
+        }, { threshold: 0.15 });
+        mastheadObserver.observe(aboutMasthead);
+    }
 });
 
 window.addEventListener('resize', () => {
