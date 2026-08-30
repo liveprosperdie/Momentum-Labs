@@ -165,6 +165,59 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Editorial Luxury Waitlist Section -->
+    <section id="waitlist" class="editorial-waitlist-section">
+        <div class="editorial-waitlist-hairline"></div>
+        <div class="editorial-waitlist-container">
+            <div class="editorial-waitlist-eyebrow">
+                <span class="eyebrow-glow-dot"></span>
+                <span>Sensei Platform &bull; Private Access</span>
+            </div>
+
+            <h2 class="editorial-waitlist-title">Join the Waitlist</h2>
+            <p class="editorial-waitlist-lead">
+                Experience Akira living on your desktop. We roll out private access in curated weekly batches.
+            </p>
+
+            <!-- Waitlist Form (Default & Loading States) -->
+            <form id="waitlist-form" class="editorial-waitlist-form" novalidate>
+                <div class="editorial-input-wrapper" id="waitlist-input-wrapper">
+                    <input 
+                        type="email" 
+                        id="waitlist-email-input" 
+                        name="email" 
+                        class="editorial-email-input" 
+                        placeholder="Enter your email address..." 
+                        autocomplete="email" 
+                        required 
+                        aria-label="Email address for waitlist"
+                    >
+                    <button type="submit" id="waitlist-submit-btn" class="editorial-submit-btn" aria-label="Submit Waitlist Request">
+                        <span class="btn-text">Join Waitlist</span>
+                        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div id="waitlist-error-message" class="editorial-inline-error" role="alert" hidden></div>
+            </form>
+
+            <!-- Success State (Revealed after submission) -->
+            <div id="waitlist-success-state" class="editorial-waitlist-success" hidden>
+                <div class="success-position-number" id="success-position-display">#1</div>
+                <p class="success-calm-line" id="success-message-display">You're number 1. We'll be in touch.</p>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="editorial-waitlist-footnote">
+                <span>Local-first neural runtime &bull; Windows 10/11</span>
+            </div>
+        </div>
+    </section>
+
     <script src="script.js"></script>
 </body>
 </html>

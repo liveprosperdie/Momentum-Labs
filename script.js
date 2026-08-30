@@ -441,44 +441,155 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ---------------------------------------------------- */
-    /* Waitlist Application Counter (Persisted in LocalStorage) */
+    /* Waitlist Form Submission & Live Counter (Real API)   */
     /* ---------------------------------------------------- */
-    const savedWaitlistCount = parseInt(localStorage.getItem('akira_waitlist_count'), 10);
-    let waitlistApplicationCount = !isNaN(savedWaitlistCount) && savedWaitlistCount >= 100 ? savedWaitlistCount : 100;
+    const waitlistForm = document.getElementById('waitlist-form');
+    const waitlistEmailInput = document.getElementById('waitlist-email-input');
+    const waitlistInputWrapper = document.getElementById('waitlist-input-wrapper');
+    const waitlistSubmitBtn = document.getElementById('waitlist-submit-btn');
+    const waitlistErrorMessage = document.getElementById('waitlist-error-message');
+    const waitlistSuccessState = document.getElementById('waitlist-success-state');
+    const successPositionDisplay = document.getElementById('success-position-display');
+    const successMessageDisplay = document.getElementById('success-message-display');
     const waitlistCountDisplay = document.getElementById('waitlist-count-display');
 
-    function updateWaitlistCountDisplay() {
-        if (waitlistCountDisplay) {
-            waitlistCountDisplay.textContent = `${waitlistApplicationCount}+`;
+    // Fetch live waitlist count from /api/waitlist-count
+    async function fetchLiveWaitlistCount() {
+        try {
+            const res = await fetch('/api/waitlist-count');
+            if (res.ok) {
+                const data = await res.json();
+                const total = data.total || 0;
+                const displayNum = Math.max(100, total);
+                if (waitlistCountDisplay) {
+                    waitlistCountDisplay.textContent = `${displayNum}+`;
+                }
+            }
+        } catch (err) {
+            console.warn('Could not fetch live waitlist count:', err);
         }
-        localStorage.setItem('akira_waitlist_count', waitlistApplicationCount);
     }
-    updateWaitlistCountDisplay(); // Initialize on page load
+    fetchLiveWaitlistCount();
 
-    function incrementWaitlistCount() {
-        waitlistApplicationCount++;
-        updateWaitlistCountDisplay();
+    if (waitlistEmailInput) {
+        waitlistEmailInput.addEventListener('input', () => {
+            if (waitlistErrorMessage) {
+                waitlistErrorMessage.setAttribute('hidden', '');
+                waitlistErrorMessage.textContent = '';
+            }
+            if (waitlistInputWrapper) {
+                waitlistInputWrapper.classList.remove('has-error');
+            }
+        });
     }
 
-    // Card Waitlist Button -> Increments counter & navigates to Waitlist section
+    if (waitlistForm) {
+        waitlistForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = (waitlistEmailInput?.value || '').trim();
+
+            if (!email) {
+                showInlineError('Please enter your email address.');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showInlineError('Please enter a valid email address.');
+                return;
+            }
+
+            // Set loading state
+            setFormLoading(true);
+
+            try {
+                const response = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json().catch(() => ({}));
+
+                if (response.ok) {
+                    // Success state: Reveal position number and calm message
+                    const position = data.position || 1;
+                    if (waitlistForm) waitlistForm.style.display = 'none';
+                    if (waitlistSuccessState) {
+                        waitlistSuccessState.removeAttribute('hidden');
+                        if (successPositionDisplay) successPositionDisplay.textContent = `#${position}`;
+                        if (successMessageDisplay) successMessageDisplay.textContent = `You're number ${position}. We'll be in touch.`;
+                    }
+                    fetchLiveWaitlistCount();
+                } else if (response.status === 409) {
+                    showInlineError("You're already on the waitlist.");
+                } else {
+                    showInlineError(data.error || 'Unable to join waitlist. Please try again.');
+                }
+            } catch (err) {
+                console.error('Waitlist submission network error:', err);
+                showInlineError('Network connection issue. Please try again.');
+            } finally {
+                setFormLoading(false);
+            }
+        });
+    }
+
+    function setFormLoading(isLoading) {
+        if (!waitlistSubmitBtn || !waitlistEmailInput) return;
+        const btnText = waitlistSubmitBtn.querySelector('.btn-text');
+        if (isLoading) {
+            waitlistSubmitBtn.setAttribute('disabled', 'true');
+            waitlistEmailInput.setAttribute('disabled', 'true');
+            if (btnText) btnText.textContent = 'Joining...';
+        } else {
+            waitlistSubmitBtn.removeAttribute('disabled');
+            waitlistEmailInput.removeAttribute('disabled');
+            if (btnText) btnText.textContent = 'Join Waitlist';
+        }
+    }
+
+    function showInlineError(message) {
+        if (waitlistErrorMessage) {
+            waitlistErrorMessage.textContent = message;
+            waitlistErrorMessage.removeAttribute('hidden');
+        }
+        if (waitlistInputWrapper) {
+            waitlistInputWrapper.classList.add('has-error');
+        }
+        if (waitlistEmailInput) {
+            waitlistEmailInput.focus();
+        }
+    }
+
+    // Card Waitlist CTA Button -> Closes modal and smoothly scrolls to #waitlist input
     if (cardWaitlistBtn) {
         cardWaitlistBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            incrementWaitlistCount();
             closeModal();
-            const headerWaitlistLink = document.querySelector('.nav-right a[href="#waitlist"]');
-            const targetHref = headerWaitlistLink ? headerWaitlistLink.getAttribute('href') : '#waitlist';
-            if (targetHref.startsWith('#')) {
-                const targetElem = document.querySelector(targetHref);
-                if (targetElem) {
-                    targetElem.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.location.hash = targetHref;
-                }
+            const targetSection = document.getElementById('waitlist');
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    if (waitlistEmailInput) waitlistEmailInput.focus();
+                }, 500);
             } else {
-                window.location.href = targetHref;
+                window.location.hash = '#waitlist';
             }
         });
+    }
+
+    // Observe waitlist section to dynamically adjust header and clear background
+    const waitlistSection = document.getElementById('waitlist');
+    if (waitlistSection && 'IntersectionObserver' in window) {
+        const waitlistObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                document.body.classList.toggle('waitlist-in-view', entry.isIntersecting);
+            });
+        }, { threshold: 0.1 });
+        waitlistObserver.observe(waitlistSection);
     }
 
     // Logo / Home icon click -> Reset trial to idle

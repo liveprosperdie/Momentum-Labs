@@ -1982,22 +1982,30 @@
                 });
             }
 
-            // Waitlist Application Counter (Base 100 + real clicks)
-            const savedWaitlistCount = parseInt(localStorage.getItem('akira_waitlist_count'), 10);
-            let waitlistApplicationCount = !isNaN(savedWaitlistCount) && savedWaitlistCount >= 100 ? savedWaitlistCount : 100;
+            // Waitlist Application Counter (Live API count + minimum baseline)
             const waitlistCountDisplay = document.getElementById('waitlist-count-display');
-            const waitlistBtn = document.getElementById('products-waitlist-btn');
-            function updateWaitlistCountDisplay() {
-                if (waitlistCountDisplay) waitlistCountDisplay.textContent = `${waitlistApplicationCount}+`;
-                localStorage.setItem('akira_waitlist_count', waitlistApplicationCount);
+            async function fetchLiveWaitlistCount() {
+                try {
+                    const res = await fetch('/api/waitlist-count');
+                    if (res.ok) {
+                        const data = await res.json();
+                        const total = data.total || 0;
+                        const displayNum = Math.max(100, total);
+                        if (waitlistCountDisplay) {
+                            waitlistCountDisplay.textContent = `${displayNum}+`;
+                        }
+                    }
+                } catch (err) {
+                    console.warn('Could not fetch live waitlist count:', err);
+                }
             }
-            updateWaitlistCountDisplay();
+            fetchLiveWaitlistCount();
+
             function handleWaitlistClick(e) {
                 e.preventDefault();
-                waitlistApplicationCount++;
-                updateWaitlistCountDisplay();
                 window.location.href = 'index.html#waitlist';
             }
+            const waitlistBtn = document.getElementById('products-waitlist-btn');
             const teaserWaitlistBtn = document.getElementById('teaser-waitlist-btn');
             if (waitlistBtn) waitlistBtn.addEventListener('click', handleWaitlistClick);
             if (modalWaitlistBtn) modalWaitlistBtn.addEventListener('click', handleWaitlistClick);

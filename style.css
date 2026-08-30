@@ -1230,4 +1230,259 @@ body {
     }
 }
 
+/* ========================================================================= */
+/* EDITORIAL LUXURY WAITLIST SECTION                                         */
+/* ========================================================================= */
+body.waitlist-in-view .interactive-trial-container,
+body.waitlist-in-view .laptop-canvas-wrapper {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+body.waitlist-in-view .site-header {
+    background: rgba(250, 247, 242, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(180, 140, 120, 0.18);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+body.waitlist-in-view .site-header a {
+    color: #000000;
+}
+
+.editorial-waitlist-section {
+    position: relative;
+    background: #faf7f2;
+    background-image: 
+        radial-gradient(900px 500px at 50% 0%, rgba(224, 150, 120, 0.07), transparent),
+        radial-gradient(800px 400px at 85% 90%, rgba(210, 170, 140, 0.05), transparent);
+    color: #1c1917;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 24px 140px 24px;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 40;
+    scroll-margin-top: 0px;
+}
+
+.editorial-waitlist-hairline {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92%, 1080px);
+    height: 1px;
+    background: rgba(180, 140, 120, 0.22);
+}
+
+.editorial-waitlist-container {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.editorial-waitlist-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Nohemi', sans-serif;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #786c62;
+    margin-bottom: 16px;
+}
+
+.editorial-waitlist-eyebrow .eyebrow-glow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #a86548;
+}
+
+.editorial-waitlist-title {
+    font-family: 'Nohemi', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: #1c1917;
+    margin: 0 0 16px 0;
+    line-height: 1.15;
+}
+
+.editorial-waitlist-lead {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 16.5px;
+    color: #57534e;
+    line-height: 1.6;
+    margin: 0 0 44px 0;
+    max-width: 540px;
+}
+
+.editorial-waitlist-form {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.editorial-input-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1.5px solid rgba(180, 140, 120, 0.35);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    padding-bottom: 4px;
+}
+
+.editorial-input-wrapper:focus-within {
+    border-bottom-color: #1c1917;
+}
+
+.editorial-input-wrapper.has-error {
+    border-bottom-color: var(--tier-pro, #a22c4f);
+}
+
+.editorial-email-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 16.5px;
+    color: #1c1917;
+    padding: 12px 14px 12px 0;
+    transition: color 0.2s ease;
+}
+
+.editorial-email-input::placeholder {
+    color: #9c928a;
+    font-weight: 400;
+}
+
+.editorial-email-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Ghost / Minimal text-only submit button */
+.editorial-submit-btn {
+    background: transparent;
+    border: none;
+    color: #1c1917;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 4px 10px 14px;
+    position: relative;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+}
+
+.editorial-submit-btn:hover {
+    opacity: 0.7;
+    transform: translateX(2px);
+}
+
+.editorial-submit-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.editorial-submit-btn .btn-arrow {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+}
+
+.editorial-submit-btn:hover .btn-arrow {
+    transform: translateX(3px);
+}
+
+/* Understated inline error */
+.editorial-inline-error {
+    width: 100%;
+    text-align: left;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--tier-pro, #a22c4f);
+    margin-top: 10px;
+    padding-left: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s ease;
+}
+
+.editorial-inline-error[hidden] {
+    display: none;
+}
+
+/* Success State */
+.editorial-waitlist-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeInCalm 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.editorial-waitlist-success[hidden] {
+    display: none;
+}
+
+.success-position-number {
+    font-family: 'Nohemi', sans-serif;
+    font-size: clamp(3.2rem, 6vw, 4.8rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: #1c1917;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.success-calm-line {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 17px;
+    color: #57534e;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.editorial-waitlist-footnote {
+    margin-top: 56px;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 12.5px;
+    color: #8c827a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+@keyframes fadeInCalm {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
 
