@@ -1522,4 +1522,316 @@ body {
     }
 }
 
+/* ========================================================================= */
+/* EDITORIAL LUXURY MASTHEAD FOOTER                                          */
+/* ========================================================================= */
+.editorial-masthead-footer {
+    position: relative;
+    background: #0d0c0a;
+    color: #faf7f2;
+    padding: 96px 40px 48px 40px;
+    font-family: 'Satoshi', sans-serif;
+    border-top: 1px solid rgba(180, 140, 120, 0.2);
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 30;
+}
+
+.masthead-inner-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+/* Top Banner with Brand & Mission */
+.masthead-top-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(180, 140, 120, 0.16);
+    padding-bottom: 48px;
+}
+
+.masthead-brand-block {
+    max-width: 540px;
+}
+
+.masthead-brand-title {
+    font-family: 'Migha', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0 0 14px 0;
+    line-height: 1.1;
+}
+
+.masthead-mission-text {
+    font-size: 15.5px;
+    color: #a8a29e;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.masthead-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(180, 140, 120, 0.25);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #d6d3d1;
+}
+
+.status-pulse-indicator {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+}
+
+/* Founders / Leadership Section */
+.masthead-leadership-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.masthead-section-eyebrow {
+    font-family: 'Nohemi', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #8c827a;
+}
+
+.founders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.founder-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(180, 140, 120, 0.18);
+    border-radius: 20px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.founder-card:hover {
+    border-color: rgba(180, 140, 120, 0.4);
+    transform: translateY(-2px);
+}
+
+.founder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.founder-name {
+    font-family: 'Nohemi', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+}
+
+.founder-role {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c9a489;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.founder-avatar-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(180, 140, 120, 0.12);
+    border: 1px solid rgba(180, 140, 120, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d6d3d1;
+}
+
+.founder-bio {
+    font-size: 14px;
+    color: #a8a29e;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.founder-socials {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(180, 140, 120, 0.12);
+}
+
+.founder-socials a {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #d6d3d1;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.founder-socials a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* 4-Column Navigation & Contact Directory */
+.masthead-directory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 36px;
+    padding-top: 12px;
+}
+
+.directory-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.directory-col-title {
+    font-family: 'Nohemi', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+}
+
+.directory-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.directory-links-list li a {
+    color: #a8a29e;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.directory-links-list li a:hover {
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+.contact-item-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.contact-item-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #78716c;
+}
+
+.contact-item-value {
+    color: #faf7f2;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.contact-item-value:hover {
+    color: #c9a489;
+}
+
+/* Bottom Bar */
+.masthead-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid rgba(180, 140, 120, 0.16);
+    font-size: 13px;
+    color: #78716c;
+}
+
+.masthead-bottom-bar a {
+    color: #a8a29e;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.masthead-bottom-bar a:hover {
+    color: #ffffff;
+}
+
+.back-to-top-btn {
+    background: transparent;
+    border: none;
+    color: #a8a29e;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .editorial-masthead-footer {
+        padding: 64px 20px 36px 20px;
+    }
+    .masthead-top-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+    .founders-grid {
+        grid-template-columns: 1fr;
+    }
+    .masthead-directory-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+    }
+    .masthead-bottom-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+
 
