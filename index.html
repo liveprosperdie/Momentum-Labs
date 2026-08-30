@@ -167,16 +167,23 @@
         </div>
     </div>
 
-    <!-- Editorial Luxury Waitlist Section -->
-    <section id="waitlist" class="editorial-waitlist-section">
-        <div class="editorial-waitlist-hairline"></div>
-        <div class="editorial-waitlist-container">
+    <!-- Editorial Luxury Waitlist Modal (Opened on click of WAITLIST or Join Waitlist CTA) -->
+    <div id="waitlist-modal" class="waitlist-modal" role="dialog" aria-modal="true" aria-labelledby="waitlist-modal-title" hidden>
+        <div class="waitlist-modal-backdrop" id="waitlist-modal-backdrop"></div>
+        <div class="waitlist-modal-dialog">
+            <button id="waitlist-modal-close" class="waitlist-modal-close" aria-label="Close waitlist dialog" title="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
             <div class="editorial-waitlist-eyebrow">
                 <span class="eyebrow-glow-dot"></span>
                 <span>Sensei Platform &bull; Private Access</span>
             </div>
 
-            <h2 class="editorial-waitlist-title">Join the Waitlist</h2>
+            <h2 id="waitlist-modal-title" class="editorial-waitlist-title">Join the Waitlist</h2>
             <p class="editorial-waitlist-lead">
                 Experience Akira living on your desktop. We roll out private access in curated weekly batches.
             </p>
@@ -216,7 +223,7 @@
                 <span>Local-first neural runtime &bull; Windows 10/11</span>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="script.js"></script>
 </body>

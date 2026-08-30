@@ -564,32 +564,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Card Waitlist CTA Button -> Closes modal and smoothly scrolls to #waitlist input
+    /* ---------------------------------------------------- */
+    /* Waitlist Modal Open/Close Controls (On-Click Only)   */
+    /* ---------------------------------------------------- */
+    const waitlistModal = document.getElementById('waitlist-modal');
+    const waitlistModalClose = document.getElementById('waitlist-modal-close');
+    const waitlistModalBackdrop = document.getElementById('waitlist-modal-backdrop');
+    const headerWaitlistLinks = document.querySelectorAll('.nav-right a[href="#waitlist"], a[href="#waitlist"], a[href="index.html#waitlist"]');
+
+    function openWaitlistModal() {
+        if (!waitlistModal) return;
+        waitlistModal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            if (waitlistEmailInput) waitlistEmailInput.focus();
+        }, 120);
+    }
+
+    function closeWaitlistModal() {
+        if (!waitlistModal) return;
+        waitlistModal.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+    }
+
+    // Header nav WAITLIST links -> Open modal on click
+    headerWaitlistLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openWaitlistModal();
+        });
+    });
+
+    if (waitlistModalClose) {
+        waitlistModalClose.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeWaitlistModal();
+        });
+    }
+
+    if (waitlistModalBackdrop) {
+        waitlistModalBackdrop.addEventListener('click', closeWaitlistModal);
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && waitlistModal && !waitlistModal.hasAttribute('hidden')) {
+            closeWaitlistModal();
+        }
+    });
+
+    // Card Waitlist CTA Button -> Closes card modal and opens waitlist modal directly
     if (cardWaitlistBtn) {
         cardWaitlistBtn.addEventListener('click', (e) => {
             e.preventDefault();
             closeModal();
-            const targetSection = document.getElementById('waitlist');
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-                setTimeout(() => {
-                    if (waitlistEmailInput) waitlistEmailInput.focus();
-                }, 500);
-            } else {
-                window.location.hash = '#waitlist';
-            }
+            openWaitlistModal();
         });
-    }
-
-    // Observe waitlist section to dynamically adjust header and clear background
-    const waitlistSection = document.getElementById('waitlist');
-    if (waitlistSection && 'IntersectionObserver' in window) {
-        const waitlistObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                document.body.classList.toggle('waitlist-in-view', entry.isIntersecting);
-            });
-        }, { threshold: 0.1 });
-        waitlistObserver.observe(waitlistSection);
     }
 
     // Logo / Home icon click -> Reset trial to idle

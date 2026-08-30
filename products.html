@@ -784,7 +784,7 @@
             </a>
         </div>
         <div class="nav-right">
-            <a href="index.html#waitlist">WAITLIST</a>
+            <a href="#waitlist">WAITLIST</a>
         </div>
     </header>
 
@@ -2001,15 +2001,133 @@
             }
             fetchLiveWaitlistCount();
 
-            function handleWaitlistClick(e) {
-                e.preventDefault();
-                window.location.href = 'index.html#waitlist';
+            // Waitlist Modal Open/Close Controls & Form Submission
+            const waitlistModal = document.getElementById('waitlist-modal');
+            const waitlistModalClose = document.getElementById('waitlist-modal-close');
+            const waitlistModalBackdrop = document.getElementById('waitlist-modal-backdrop');
+            const headerWaitlistLinks = document.querySelectorAll('.nav-right a[href="#waitlist"], a[href="index.html#waitlist"], a[href="#waitlist"]');
+            const waitlistForm = document.getElementById('waitlist-form');
+            const waitlistEmailInput = document.getElementById('waitlist-email-input');
+            const waitlistInputWrapper = document.getElementById('waitlist-input-wrapper');
+            const waitlistSubmitBtn = document.getElementById('waitlist-submit-btn');
+            const waitlistErrorMessage = document.getElementById('waitlist-error-message');
+            const waitlistSuccessState = document.getElementById('waitlist-success-state');
+            const successPositionDisplay = document.getElementById('success-position-display');
+            const successMessageDisplay = document.getElementById('success-message-display');
+
+            function openWaitlistModal(e) {
+                if (e) e.preventDefault();
+                if (!waitlistModal) return;
+                waitlistModal.removeAttribute('hidden');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    if (waitlistEmailInput) waitlistEmailInput.focus();
+                }, 120);
             }
+
+            function closeWaitlistModal() {
+                if (!waitlistModal) return;
+                waitlistModal.setAttribute('hidden', '');
+                document.body.style.overflow = '';
+            }
+
+            headerWaitlistLinks.forEach(link => link.addEventListener('click', openWaitlistModal));
             const waitlistBtn = document.getElementById('products-waitlist-btn');
             const teaserWaitlistBtn = document.getElementById('teaser-waitlist-btn');
-            if (waitlistBtn) waitlistBtn.addEventListener('click', handleWaitlistClick);
-            if (modalWaitlistBtn) modalWaitlistBtn.addEventListener('click', handleWaitlistClick);
-            if (teaserWaitlistBtn) teaserWaitlistBtn.addEventListener('click', handleWaitlistClick);
+            if (waitlistBtn) waitlistBtn.addEventListener('click', openWaitlistModal);
+            if (modalWaitlistBtn) modalWaitlistBtn.addEventListener('click', openWaitlistModal);
+            if (teaserWaitlistBtn) teaserWaitlistBtn.addEventListener('click', openWaitlistModal);
+
+            if (waitlistModalClose) waitlistModalClose.addEventListener('click', closeWaitlistModal);
+            if (waitlistModalBackdrop) waitlistModalBackdrop.addEventListener('click', closeWaitlistModal);
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && waitlistModal && !waitlistModal.hasAttribute('hidden')) {
+                    closeWaitlistModal();
+                }
+            });
+
+            if (waitlistEmailInput) {
+                waitlistEmailInput.addEventListener('input', () => {
+                    if (waitlistErrorMessage) {
+                        waitlistErrorMessage.setAttribute('hidden', '');
+                        waitlistErrorMessage.textContent = '';
+                    }
+                    if (waitlistInputWrapper) {
+                        waitlistInputWrapper.classList.remove('has-error');
+                    }
+                });
+            }
+
+            if (waitlistForm) {
+                waitlistForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = (waitlistEmailInput?.value || '').trim();
+                    if (!email) {
+                        showInlineError('Please enter your email address.');
+                        return;
+                    }
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        showInlineError('Please enter a valid email address.');
+                        return;
+                    }
+
+                    setFormLoading(true);
+                    try {
+                        const response = await fetch('/api/waitlist', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        });
+                        const data = await response.json().catch(() => ({}));
+                        if (response.ok) {
+                            const position = data.position || 1;
+                            if (waitlistForm) waitlistForm.style.display = 'none';
+                            if (waitlistSuccessState) {
+                                waitlistSuccessState.removeAttribute('hidden');
+                                if (successPositionDisplay) successPositionDisplay.textContent = `#${position}`;
+                                if (successMessageDisplay) successMessageDisplay.textContent = `You're number ${position}. We'll be in touch.`;
+                            }
+                            fetchLiveWaitlistCount();
+                        } else if (response.status === 409) {
+                            showInlineError("You're already on the waitlist.");
+                        } else {
+                            showInlineError(data.error || 'Unable to join waitlist. Please try again.');
+                        }
+                    } catch (err) {
+                        showInlineError('Network connection issue. Please try again.');
+                    } finally {
+                        setFormLoading(false);
+                    }
+                });
+            }
+
+            function setFormLoading(isLoading) {
+                if (!waitlistSubmitBtn || !waitlistEmailInput) return;
+                const btnText = waitlistSubmitBtn.querySelector('.btn-text');
+                if (isLoading) {
+                    waitlistSubmitBtn.setAttribute('disabled', 'true');
+                    waitlistEmailInput.setAttribute('disabled', 'true');
+                    if (btnText) btnText.textContent = 'Joining...';
+                } else {
+                    waitlistSubmitBtn.removeAttribute('disabled');
+                    waitlistEmailInput.removeAttribute('disabled');
+                    if (btnText) btnText.textContent = 'Join Waitlist';
+                }
+            }
+
+            function showInlineError(message) {
+                if (waitlistErrorMessage) {
+                    waitlistErrorMessage.textContent = message;
+                    waitlistErrorMessage.removeAttribute('hidden');
+                }
+                if (waitlistInputWrapper) {
+                    waitlistInputWrapper.classList.add('has-error');
+                }
+                if (waitlistEmailInput) {
+                    waitlistEmailInput.focus();
+                }
+            }
 
             // Like Button & Real-time Sync
             const likeBtn = document.getElementById('akira-like-btn');
@@ -2072,5 +2190,63 @@
             });
         });
     </script>
+
+    <!-- Editorial Luxury Waitlist Modal (Opened on click of WAITLIST or Join Waitlist CTA) -->
+    <div id="waitlist-modal" class="waitlist-modal" role="dialog" aria-modal="true" aria-labelledby="waitlist-modal-title" hidden>
+        <div class="waitlist-modal-backdrop" id="waitlist-modal-backdrop"></div>
+        <div class="waitlist-modal-dialog">
+            <button id="waitlist-modal-close" class="waitlist-modal-close" aria-label="Close waitlist dialog" title="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <div class="editorial-waitlist-eyebrow">
+                <span class="eyebrow-glow-dot"></span>
+                <span>Sensei Platform &bull; Private Access</span>
+            </div>
+
+            <h2 id="waitlist-modal-title" class="editorial-waitlist-title">Join the Waitlist</h2>
+            <p class="editorial-waitlist-lead">
+                Experience Akira living on your desktop. We roll out private access in curated weekly batches.
+            </p>
+
+            <!-- Waitlist Form (Default & Loading States) -->
+            <form id="waitlist-form" class="editorial-waitlist-form" novalidate>
+                <div class="editorial-input-wrapper" id="waitlist-input-wrapper">
+                    <input 
+                        type="email" 
+                        id="waitlist-email-input" 
+                        name="email" 
+                        class="editorial-email-input" 
+                        placeholder="Enter your email address..." 
+                        autocomplete="email" 
+                        required 
+                        aria-label="Email address for waitlist"
+                    >
+                    <button type="submit" id="waitlist-submit-btn" class="editorial-submit-btn" aria-label="Submit Waitlist Request">
+                        <span class="btn-text">Join Waitlist</span>
+                        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div id="waitlist-error-message" class="editorial-inline-error" role="alert" hidden></div>
+            </form>
+
+            <!-- Success State (Revealed after submission) -->
+            <div id="waitlist-success-state" class="editorial-waitlist-success" hidden>
+                <div class="success-position-number" id="success-position-display">#1</div>
+                <p class="success-calm-line" id="success-message-display">You're number 1. We'll be in touch.</p>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="editorial-waitlist-footnote">
+                <span>Local-first neural runtime &bull; Windows 10/11</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
