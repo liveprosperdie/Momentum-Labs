@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Scroll Animation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-left">
+            <!-- Empty left side to balance -->
+        </div>
+        <div class="nav-center">
+            <a href="#" aria-label="Go to top" class="logo-link">
+                <img src="Screenshot 2026-08-26 000343-Photoroom.png" alt="Momentum Labs Logo" class="header-logo-img">
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="products.html">PRODUCTS</a>
+            <a href="#waitlist">WAITLIST</a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 1. Dedicated single-purpose wrapper for canvas ONLY - Direct child of body -->
+    <div id="laptop-canvas-wrapper" class="laptop-canvas-wrapper">
+        <canvas id="hero-lightpass"></canvas>
+    </div>
+
+    <!-- Scroll Track Spacer -->
+    <div class="scroll-container"></div>
+
+    <!-- Interactive Trial Component -->
+    <div id="interactive-trial" class="interactive-trial-container" data-state="idle">
+        <!-- Controls Bracket - Left Side Outside Laptop Chassis -->
+        <div class="taskbar-bar">
+            <button id="trial-trigger-btn" class="trial-trigger-btn" aria-label="Activate Demo App" tabindex="1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="waves-icon">
+                    <path d="M2 12h2l3-9 4 18 4-14 3 8 2-3h2"></path>
+                </svg>
+                <span class="trigger-label">Demo</span>
+            </button>
+
+            <!-- Reset Button Control -->
+            <button id="trial-reset-btn" class="trial-reset-btn" aria-label="Reset Interactive Demo" tabindex="5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="reset-icon">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                </svg>
+                <span>Reset</span>
+            </button>
+        </div>
+
+        <!-- Laptop Container & Clipped Screen Bounds -->
+        <div class="laptop-container">
+            <div class="screen-bounds laptop-screen-viewport">
+                <!-- Akira Character Portrait (Direct Child of .screen-bounds, Clipped to Screen) -->
+                <div id="akira-avatar-wrapper" class="akira-avatar-wrapper" tabindex="4" role="button" aria-haspopup="dialog" aria-label="View Akira Spec Card">
+                    <img id="akira-img" src="idle.png" alt="Akira AI Companion Portrait" class="akira-portrait-img">
+                </div>
+
+                <!-- Now Playing Info (Direct Child of .screen-bounds, Unboxed on Wallpaper) -->
+                <div id="now-playing-card" class="now-playing-card">
+                    <div class="animated-play-bar">
+                        <span class="bar bar-1"></span>
+                        <span class="bar bar-2"></span>
+                        <span class="bar bar-3"></span>
+                        <span class="bar bar-4"></span>
+                    </div>
+                    <div class="track-info">
+                        <h4 class="track-title">Midnight Wave Beats</h4>
+                        <p class="artist-name">Akira Neural Audio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Margin Column (Outside Laptop, to Akira's Right) -->
+        <div id="akira-dialog-box" class="akira-dialog-box">
+            <p id="akira-caption-text" class="akira-caption-text">Wanna hear something?</p>
+            
+            <!-- Step A: Yes Action Button -->
+            <button id="akira-yes-btn" class="akira-yes-btn" tabindex="2">Yes</button>
+
+            <!-- Step B: Mic Action Button (Shown after Yes is clicked) -->
+            <button id="akira-mic-btn" class="akira-mic-btn" aria-label="Start Voice Listening" tabindex="2" style="display: none;">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="mic-icon">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+                <div class="mic-pulse-ring"></div>
+            </button>
+
+            <!-- Exactly 2 Options Buttons (Stacked vertically in right-margin column once music starts) -->
+            <div id="trial-options-group" class="trial-options-group">
+                <button class="option-btn" data-option="Play Believer on YouTube" tabindex="3">Play Believer on YouTube</button>
+                <button class="option-btn" data-option="Open Amazon" tabindex="3">Open Amazon</button>
+            </div>
+        </div>
+
+        <!-- Akira Spec Card Modal (White Background & Blurred Text Panel with Dropdown & Dynamic Waitlist Counter) -->
+        <div id="akira-modal" class="akira-modal" role="dialog" aria-modal="true" aria-labelledby="akira-modal-title" hidden>
+            <div class="akira-modal-backdrop" id="akira-modal-backdrop"></div>
+            <div class="akira-card-frame theme-light">
+                <button id="akira-modal-close" class="akira-modal-close" aria-label="Close Akira Card" title="Close Card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="close-icon">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="akira-card-hero">
+                    <img src="card.png" alt="Akira Portrait" class="akira-card-hero-img">
+                </div>
+                <div class="akira-card-overlay frosted-blur">
+                    <div class="akira-card-header-row">
+                        <h3 id="akira-modal-title" class="akira-card-title-text" title="Click to view all actions Akira can perform">Akira</h3>
+                        <button id="akira-card-dropdown-toggle" class="akira-card-dropdown-toggle" aria-expanded="false" aria-label="Toggle Akira Details">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="akira-card-tagline">Personal AI Partner | Living in your computer</p>
+                    
+                    <!-- Dropdown Details Panel (Reveals Akira Partner Traits) -->
+                    <div id="akira-card-dropdown-panel" class="akira-card-dropdown-panel" hidden>
+                        <ul class="akira-traits-list">
+                            <li><span>•</span> Warm, sharp partner — invested in your growth without sugarcoating</li>
+                            <li><span>•</span> Carries real context — remembers what you build, struggle with, & win</li>
+                            <li><span>•</span> Calls out excuses plainly — dry-witted, direct, never customer-service robotic</li>
+                            <li><span>•</span> Adapts to your energy — crisp in work mode, relaxed when chilling, steady at 2am</li>
+                        </ul>
+                    </div>
+
+                    <div class="akira-card-footer">
+                        <div class="akira-card-metrics">
+                            <div class="metric-item" title="Waitlist Application Count (Starts at 100)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span id="waitlist-count-display">100+</span>
+                            </div>
+                            <button id="akira-like-btn" class="metric-item metric-like-btn" aria-label="Like Akira" title="Like Akira">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon heart-icon">
+                                    <defs>
+                                        <linearGradient id="neonPinkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#ff007f" />
+                                            <stop offset="50%" stop-color="#ff2a85" />
+                                            <stop offset="100%" stop-color="#ff758c" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span id="like-count-display">60</span>
+                            </button>
+                        </div>
+                        <button class="akira-waitlist-btn">Join Waitlist +</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="script.js"></script>
+</body>
+</html>

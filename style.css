@@ -1,0 +1,1120 @@
+:root {
+    --akira-size: 110px;
+    --akira-card-size: 240px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --akira-size: 70px;
+        --akira-card-size: 180px;
+    }
+}
+
+@font-face {
+    font-family: 'Migha';
+    src: url('migha_display/Migha Display/Normal/Migha-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Migha';
+    src: url('migha_display/Migha Display/Normal/Migha-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-VariableItalic.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: italic;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #000;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.scroll-container {
+    height: 600vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Dedicated wrapper for canvas ONLY - Direct child of body */
+.laptop-canvas-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#hero-lightpass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Header Styles - Refined & Compact (110px) */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 48px;
+    background: transparent;
+    z-index: 100;
+    font-family: 'Migha', sans-serif;
+}
+
+.nav-left {
+    display: flex;
+    gap: 32px;
+    flex: 1; /* Keeps logo centered */
+}
+
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-decoration: none;
+}
+
+/* Center Logo Image matched to header size */
+.header-logo-img {
+    height: 76px;
+    max-height: 80%;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.logo-link:hover .header-logo-img {
+    transform: scale(1.04);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.nav-right a {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Migha', sans-serif;
+    transition: opacity 0.2s ease;
+}
+
+.nav-right a:hover {
+    opacity: 0.7;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.mobile-menu-toggle svg {
+    width: 36px;
+    height: 36px;
+}
+
+/* ---------------------------------------------------- */
+/* Interactive Trial Component (Rebuilt Complete Spec) */
+/* ---------------------------------------------------- */
+.interactive-trial-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50;
+    pointer-events: none;
+    font-family: 'Migha', system-ui, -apple-system, sans-serif;
+}
+
+.interactive-trial-container:not(.scroll-complete) {
+    display: none !important;
+}
+
+.interactive-trial-container * {
+    pointer-events: auto;
+}
+
+/* Laptop Image Container Bounds (Centered over Hero Laptop Image) */
+.laptop-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(74vw, 1080px);
+    height: min(58vh, 620px);
+    pointer-events: none;
+    z-index: 52;
+}
+
+/* NOTE: These clip-path percentages are measured against the current 3D laptop asset.
+   If the asset is swapped or re-cropped, they must be re-measured. */
+.screen-bounds,
+.laptop-screen-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(
+        14.8% 1.5%,   /* top-left */
+        85.3% 3.8%,   /* top-right */
+        87.1% 73.5%,  /* bottom-right */
+        13.0% 74.5%   /* bottom-left */
+    );
+    overflow: hidden !important; /* Strict 3D screen polygon clipping */
+    pointer-events: none;
+}
+
+/* ---------------------------------------------------- */
+/* INSIDE SCREEN BOUNDS: Akira Sprite & Now-Playing Info */
+/* ---------------------------------------------------- */
+
+/* Akira Sprite - Direct child of .screen-bounds, anchored near bottom-right corner (87.1% x, 73.5% y) */
+.akira-avatar-wrapper {
+    position: absolute;
+    bottom: calc(25.5% - 20px); /* Shifted 20px down */
+    right: 19.5%; /* Horizontal position kept exactly as-is */
+    width: min(16.5%, 155px); /* Slightly bigger rendered sprite size */
+    height: auto;
+    max-height: 48%;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: default;
+    pointer-events: none; /* Disabled until playing state begins */
+    transform: translateX(120%) scale(0.9);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+    z-index: 55;
+}
+
+/* Akira becomes clickable to open spec card ONLY once music starts playing */
+.interactive-trial-container[data-state="playing"] .akira-avatar-wrapper {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.interactive-trial-container.step-b-active .akira-avatar-wrapper,
+.interactive-trial-container[data-state="listening"] .akira-avatar-wrapper,
+.interactive-trial-container[data-state="responding"] .akira-avatar-wrapper,
+.interactive-trial-container[data-state="playing"] .akira-avatar-wrapper {
+    animation: akiraSlideUpScreen 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 1;
+}
+
+@keyframes akiraSlideUpScreen {
+    0% {
+        transform: translateY(140%);
+        opacity: 0;
+    }
+    75% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.interactive-trial-container[data-state="playing"] .akira-avatar-wrapper:hover {
+    transform: scale(1.03) !important;
+}
+
+.akira-avatar-wrapper:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+
+.akira-portrait-img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    image-rendering: pixelated; /* Crisp pixel art portrait */
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+}
+
+/* Now Playing Info - Direct child of .screen-bounds, anchored near bottom-left corner (13.0% x, 74.5% y) */
+.now-playing-card {
+    position: absolute;
+    bottom: 26.0%; /* Vertical position kept as-is */
+    left: 20.8%; /* Nudged slightly right relative to .screen-bounds */
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    max-width: min(34%, 280px);
+    box-shadow: none;
+    transform: translateY(30px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, visibility 0.4s;
+    z-index: 57;
+    font-family: 'Migha', sans-serif; /* Explicitly keep Migha font for music bar inside laptop */
+}
+
+.interactive-trial-container[data-state="playing"] .now-playing-card {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    overflow: hidden;
+    font-family: 'Migha', sans-serif;
+}
+
+.track-title {
+    font-size: min(1.05em, 16px);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8);
+    font-family: 'Migha', sans-serif;
+}
+
+.artist-name {
+    font-size: min(0.85em, 13px);
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    font-family: 'Migha', sans-serif;
+}
+
+.animated-play-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.animated-play-bar .bar {
+    width: 3px;
+    background: #ffffff;
+    border-radius: 2px;
+    height: 30%;
+    animation: playBarBounce 1.2s ease-in-out infinite alternate;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.animated-play-bar .bar-1 { animation-delay: 0.1s; }
+.animated-play-bar .bar-2 { animation-delay: 0.3s; }
+.animated-play-bar .bar-3 { animation-delay: 0.5s; }
+.animated-play-bar .bar-4 { animation-delay: 0.2s; }
+
+@keyframes playBarBounce {
+    0% { height: 20%; }
+    100% { height: 100%; }
+}
+
+/* ---------------------------------------------------- */
+/* OUTSIDE LAPTOP: Right Margin Column (Prompt + Options) */
+/* ---------------------------------------------------- */
+.akira-dialog-box {
+    position: fixed;
+    top: 50%;
+    right: 5px; /* Shifted further to the right */
+    transform: translateY(-50%) translateX(20px);
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    padding: 0;
+    color: #000000;
+    width: min(30vw, 420px); /* Generous width to utilize right white space efficiently */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center aligned */
+    text-align: center; /* Center aligned */
+    gap: 22px;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, visibility 0.35s;
+    z-index: 60;
+    font-family: 'Satoshi', sans-serif;
+}
+
+.interactive-trial-container[data-state="prompt"] .akira-dialog-box,
+.interactive-trial-container[data-state="listening"] .akira-dialog-box,
+.interactive-trial-container[data-state="responding"] .akira-dialog-box,
+.interactive-trial-container[data-state="playing"] .akira-dialog-box {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Bold Hagrid black caption text (44px High-Impact Headline) */
+.akira-caption-text {
+    font-size: min(2.6em, 44px);
+    line-height: 1.25;
+    color: #000000; /* Pure black */
+    font-weight: bold; /* Bold Hagrid */
+    font-style: normal;
+    letter-spacing: -0.01em;
+    text-shadow: none; /* Clean pure black text, no box */
+    text-align: center;
+    font-family: 'Hagrid', sans-serif;
+}
+
+/* Step A: Yes Action Button (Bold Hagrid) */
+.akira-yes-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 12px 32px;
+    border-radius: 28px;
+    font-size: 22px;
+    font-weight: bold; /* Bold Hagrid */
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    transition: all 0.25s ease;
+    align-self: center;
+    font-family: 'Hagrid', sans-serif;
+}
+
+.akira-yes-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.akira-yes-btn:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+}
+
+/* Step B: Mic Action Button */
+.akira-mic-btn {
+    position: relative;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    transition: all 0.25s ease;
+}
+
+.akira-mic-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    transform: scale(1.06);
+}
+
+.akira-mic-btn:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+}
+
+.mic-icon {
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+}
+
+.mic-pulse-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Listening State Pulse Animation */
+.interactive-trial-container[data-state="listening"] .mic-pulse-ring {
+    animation: micPulse 0.75s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* The 2 Option Buttons - Stacked vertically in right margin, Center Aligned, Medium Italic Satoshi */
+.trial-options-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+    font-family: 'Satoshi', sans-serif;
+}
+
+.interactive-trial-container.options-active .trial-options-group {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.option-btn {
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 12px 28px;
+    border-radius: 26px;
+    font-size: min(1.25em, 19px);
+    font-weight: 500; /* Medium Satoshi */
+    font-style: italic; /* Italics */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    font-family: 'Satoshi', sans-serif;
+}
+
+.option-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.option-btn:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 2px;
+}
+
+/* ---------------------------------------------------- */
+/* OUTSIDE LAPTOP: Bottom-Left Corner (Demo + Reset)    */
+/* ---------------------------------------------------- */
+.taskbar-bar {
+    position: fixed;
+    bottom: min(8vh, 60px);
+    left: min(4vw, 60px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+    font-family: 'Satoshi', sans-serif;
+}
+
+/* Mounts & becomes interactive only after hero scroll animation completes */
+.interactive-trial-container.scroll-complete .taskbar-bar {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.trial-trigger-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #000000;
+    backdrop-filter: blur(12px);
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 11px 22px;
+    border-radius: 26px;
+    cursor: pointer;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1.05em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    transition: all 0.25s ease;
+}
+
+.trial-trigger-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.waves-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.trial-reset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 9px 18px;
+    border-radius: 22px;
+    cursor: pointer;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 0.9em;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.trial-reset-btn:hover {
+    color: #000000;
+    background: #ffffff;
+    border-color: #ffffff;
+}
+
+.reset-icon {
+    width: 13px;
+    height: 13px;
+}
+
+
+/* Akira Spec Modal (Reference UI Design) */
+.interactive-trial-container.modal-open {
+    z-index: 3000 !important;
+}
+
+.akira-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.akira-modal[hidden] {
+    display: none !important;
+}
+
+.akira-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(8px);
+}
+
+.akira-card-frame {
+    position: relative;
+    z-index: 10;
+    width: 420px;
+    max-width: 92vw;
+    height: 600px;
+    max-height: 88vh;
+    border-radius: 32px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: #0d0d11;
+    animation: modalAppear 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Satoshi', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.akira-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    padding: 0;
+}
+
+.akira-modal-close:hover {
+    background: rgba(239, 68, 68, 0.9);
+    border-color: #ef4444;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.close-icon {
+    width: 18px;
+    height: 18px;
+    stroke: #ffffff;
+}
+
+.akira-card-hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.akira-card-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    image-rendering: pixelated;
+    display: block;
+}
+
+/* Dark Translucent Frosted Glass Blur Overlay Panel over bottom of hero image */
+.akira-card-overlay.frosted-blur {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    padding: 26px 24px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.65) 75%, rgba(0, 0, 0, 0.25) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #ffffff;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.akira-card-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.akira-card-title-text {
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    font-family: 'Satoshi', sans-serif;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.akira-card-title-text:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* Chevron Dropdown Toggle Button next to Akira's name */
+.akira-card-dropdown-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+    transition: transform 0.25s ease, background 0.2s ease;
+    padding: 0;
+}
+
+.akira-card-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.akira-card-dropdown-toggle[aria-expanded="true"] {
+    transform: rotate(180deg);
+    background: #ffffff;
+    color: #000000;
+}
+
+.chevron-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.akira-card-tagline {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.4;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    margin-bottom: 6px;
+}
+
+/* Collapsible Dropdown Details Drawer */
+.akira-card-dropdown-panel {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin 0.3s ease;
+    margin: 0;
+}
+
+.akira-card-dropdown-panel:not([hidden]) {
+    max-height: 280px;
+    opacity: 1;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.akira-traits-list {
+    list-style: none;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 13.5px;
+    color: #ffffff;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    line-height: 1.4;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.akira-traits-list span {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.akira-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 6px;
+}
+
+.akira-card-metrics {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Satoshi', sans-serif;
+}
+
+.metric-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+.metric-like-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 20px;
+    transition: transform 0.2s ease, background 0.2s ease;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.metric-like-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.08);
+}
+
+.metric-like-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+.metric-like-btn .heart-icon {
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+}
+
+.metric-like-btn.liked .heart-icon {
+    fill: url(#neonPinkGradient);
+    stroke: #ff2a85;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 127, 0.85)) drop-shadow(0 0 20px rgba(255, 42, 133, 0.5));
+    transform: scale(1.25);
+    animation: heartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.metric-like-btn.liked {
+    color: #ff3399;
+    text-shadow: 0 0 12px rgba(255, 51, 153, 0.8);
+}
+
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.45); }
+    100% { transform: scale(1.25); }
+}
+
+/* Instagram Floating Pop Heart Burst Effect */
+.insta-pop-heart {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 90px;
+    height: 90px;
+    z-index: 40;
+    pointer-events: none;
+    animation: instaPopHeart 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 127, 0.95)) drop-shadow(0 0 35px rgba(255, 117, 140, 0.7));
+}
+
+.insta-pop-heart svg {
+    width: 100%;
+    height: 100%;
+    fill: url(#neonPinkGradient);
+    stroke: #ff2a85;
+    stroke-width: 1.5;
+}
+
+@keyframes instaPopHeart {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -40%) scale(0.2) rotate(-15deg);
+    }
+    35% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.4) rotate(0deg);
+    }
+    65% {
+        opacity: 0.95;
+        transform: translate(-50%, -70%) scale(1.2) rotate(10deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -120px) scale(0.85) rotate(-10deg);
+    }
+}
+
+.metric-icon {
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+    stroke: #ffffff;
+}
+
+.akira-waitlist-btn {
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 32px;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.akira-waitlist-btn:hover {
+    background: #f3f4f6;
+    transform: scale(1.04);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    .interactive-trial-container *,
+    .interactive-trial-container *::before,
+    .interactive-trial-container *::after,
+    .akira-modal-content {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .feature-blur-backdrop {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    #hero-lightpass {
+        transform: translate(-50%, -50%) !important;
+    }
+
+    .feature-icons-container {
+        position: fixed;
+        bottom: 8%;
+        top: auto;
+        left: 50%;
+        transform: translateX(-50%) !important;
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 32px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .feature-icon {
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)) !important;
+    }
+}
+
+/* Responsive Handling for Laptop (16:9) and Phone (9:16) */
+@media (max-width: 1024px) {
+    .site-header {
+        height: 130px;
+        padding: 0 40px;
+    }
+    .header-logo-img {
+        height: 90px;
+    }
+    .nav-right a {
+        font-size: 20px;
+    }
+    .laptop-screen-viewport {
+        width: min(85vw, 900px);
+        height: min(52vh, 520px);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Phone / Portrait 9:16 View */
+    .site-header {
+        height: 96px;
+        padding: 0 24px;
+    }
+    .header-logo-img {
+        height: 64px;
+    }
+    .nav-right a {
+        display: none; /* Mobile menu toggle used on small phone view */
+    }
+    .mobile-menu-toggle {
+        display: block;
+    }
+    .laptop-screen-viewport {
+        width: 92vw;
+        height: 48vh;
+        transform: translate(-50%, -50%);
+    }
+    .akira-dialog-box {
+        right: 5%;
+        bottom: 30%;
+        max-width: 60%;
+    }
+    .now-playing-card {
+        width: 55%;
+    }
+}
+
+

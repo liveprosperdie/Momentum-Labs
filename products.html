@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Momentum Labs</title>
+    <meta name="description" content="Explore products by Momentum Labs — Akira, personal AI companion and desktop actions directory.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.products-page {
+            background-color: #f7f9f6;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .products-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 96px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 48px;
+            background: rgba(247, 249, 246, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            box-sizing: border-box;
+            font-family: 'Migha', sans-serif;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: background 0.3s ease;
+        }
+
+        .products-header .nav-left {
+            display: flex;
+            gap: 32px;
+            flex: 1;
+        }
+
+        .products-header .nav-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .products-header .logo-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .products-header .header-logo-img {
+            height: 68px;
+            max-height: 75%;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .products-header .logo-link:hover .header-logo-img {
+            transform: scale(1.04);
+        }
+
+        .products-header .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .products-header .nav-right a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-family: 'Migha', sans-serif;
+            transition: opacity 0.2s ease;
+        }
+
+        .products-header .nav-right a:hover {
+            opacity: 0.7;
+        }
+
+        .products-header .nav-right a.active {
+            opacity: 1;
+            text-decoration: underline;
+            text-underline-offset: 6px;
+        }
+
+        /* Products Page Layout */
+        .products-main {
+            min-height: 100vh;
+            width: 100%;
+            padding-top: 96px;
+            box-sizing: border-box;
+            background-color: #f7f9f6;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Blur content behind overlay */
+        body.capabilities-open .products-main-content {
+            filter: blur(18px);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.4;
+            transition: filter 0.35s ease, opacity 0.35s ease;
+        }
+
+        .products-main-content {
+            width: 100%;
+            transition: filter 0.35s ease, opacity 0.35s ease;
+        }
+
+        .products-layout {
+            width: 100%;
+            padding: 32px 64px 80px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 48px;
+        }
+
+        .products-left-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        /* Products Akira Showcase Card */
+        .products-left-panel .akira-card-frame {
+            position: relative;
+            width: 410px;
+            max-width: calc(100vw - 48px);
+            height: 590px;
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.14), 0 4px 18px rgba(0, 0, 0, 0.06);
+            background: #0d0d11;
+            animation: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .products-left-panel .akira-card-frame:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 36px 90px rgba(0, 0, 0, 0.18), 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .products-card-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 28px;
+            width: 100%;
+        }
+
+        .side-bottom-teaser-wrap {
+            margin-bottom: 24px;
+        }
+
+        /* ========================================================================= */
+        /* TEASER ONE-LINER (SATOSHI BOLD & SMALL - SIMPLE TEXT NO BOX)              */
+        /* ========================================================================= */
+        .models-teaser-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #8c827a;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .models-teaser-line .teaser-pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c86d51;
+            box-shadow: 0 0 6px rgba(200, 109, 81, 0.6);
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+        @media (max-width: 768px) {
+            .products-card-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .side-bottom-teaser-wrap {
+                margin-bottom: 0;
+            }
+        }
+
+        /* ========================================================================= */
+        /* LIGHT LUXURY BENTO SHOWCASE                                               */
+        /* ========================================================================= */
+        .capabilities-overlay-container {
+            position: fixed;
+            top: 96px;
+            left: 0;
+            width: 100vw;
+            height: calc(100vh - 96px);
+            z-index: 500;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px) scale(0.99);
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+            padding: 28px 48px 90px;
+        }
+
+        body.capabilities-open .capabilities-overlay-container {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Light Frosted Backdrop */
+        .capabilities-backdrop {
+            position: fixed;
+            top: 96px;
+            left: 0;
+            width: 100vw;
+            height: calc(100vh - 96px);
+            background: rgba(247, 244, 239, 0.88);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            z-index: -1;
+        }
+
+        /* Light Bento Shell - Warm Silk Alabaster */
+        .bento-shell {
+            max-width: 1240px;
+            margin: 0 auto;
+            background: #faf7f2;
+            background-image: 
+                radial-gradient(900px 500px at 5% -5%, rgba(224, 150, 120, 0.12), transparent),
+                radial-gradient(800px 400px at 95% 10%, rgba(210, 170, 140, 0.1), transparent);
+            border-radius: 32px;
+            border: 1px solid rgba(190, 160, 145, 0.3);
+            box-shadow: 0 32px 90px rgba(100, 70, 50, 0.08), 0 4px 20px rgba(0, 0, 0, 0.02);
+            padding: 44px 48px;
+            box-sizing: border-box;
+            color: #1c1917;
+            position: relative;
+        }
+
+        .capabilities-close-btn {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #292524;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10;
+        }
+
+        .capabilities-close-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            transform: scale(1.08) rotate(90deg);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Showcase Top Header */
+        .showcase-header {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-right: 60px;
+        }
+
+        .showcase-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .showcase-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #f1ece4;
+            border: 1px solid rgba(180, 140, 120, 0.25);
+            border-radius: 9999px;
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #634335;
+        }
+
+        .showcase-badge .badge-glow {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c86d51;
+            box-shadow: 0 0 8px #c86d51;
+        }
+
+        .showcase-title {
+            font-family: 'Migha', 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 3.8vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #1c1917;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .showcase-title span.accent-grad {
+            background: linear-gradient(135deg, #1c1917 40%, #785242 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-lead {
+            font-size: 16px;
+            color: #57534e;
+            line-height: 1.6;
+            margin: 0;
+            max-width: 860px;
+        }
+
+        /* Segmented Filter Bar */
+        .segmented-filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ede7dd;
+            border: 1px solid rgba(180, 140, 120, 0.25);
+            border-radius: 20px;
+            padding: 6px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .segmented-pill-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .segment-pill {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #605a54;
+            padding: 9px 18px;
+            border-radius: 14px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .segment-pill:hover {
+            color: #1c1917;
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .segment-pill.active {
+            background: #ffffff;
+            color: #1c1917;
+            border-color: rgba(180, 140, 120, 0.2);
+            box-shadow: 0 4px 14px rgba(100, 70, 50, 0.08);
+        }
+
+        .segment-pill .tier-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .segment-pill .tier-dot.free { background: #059669; }
+        .segment-pill .tier-dot.standard { background: #d97706; }
+        .segment-pill .tier-dot.pro { background: #b84a62; }
+        .segment-pill .tier-dot.beta { background: #5c62d6; }
+
+        /* Quick Action Search Input */
+        .action-search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid rgba(180, 140, 120, 0.25);
+            border-radius: 12px;
+            padding: 8px 14px;
+            min-width: 220px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .action-search-box svg {
+            width: 15px;
+            height: 15px;
+            color: #8c827a;
+        }
+
+        .action-search-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #1c1917;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 13.5px;
+            width: 100%;
+        }
+
+        .action-search-input::placeholder {
+            color: #9c928a;
+        }
+
+        /* ========================================================================= */
+        /* TIER SECTIONS & BENTO GRIDS                                               */
+        /* ========================================================================= */
+        .tier-showcase-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 130px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .tier-header-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(180, 140, 120, 0.2);
+            padding-bottom: 14px;
+        }
+
+        .tier-title-lockup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .tier-hero-title {
+            font-family: 'Migha', 'Satoshi', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #1c1917;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tier-tag {
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .tier-tag.free { background: #e8f7ee; color: #047857; border: 1px solid #a7f3d0; }
+        .tier-tag.standard { background: #fef5e7; color: #b45309; border: 1px solid #fde68a; }
+        .tier-tag.pro { background: #faebef; color: #a22c4f; border: 1px solid #f9c2d1; }
+        .tier-tag.beta { background: #eeeffc; color: #4338ca; border: 1px solid #c7d2fe; }
+        .tier-tag.matrix { background: #f1ece4; color: #44403c; border: 1px solid #d6ccc2; }
+
+        .tier-subtitle-text {
+            font-size: 15px;
+            color: #605a54;
+            margin: 0 0 20px 0;
+            line-height: 1.55;
+        }
+
+        /* Bento Grid Anatomy */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+
+        .bento-card {
+            background: #ffffff;
+            border: 1px solid rgba(190, 160, 145, 0.22);
+            border-radius: 20px;
+            padding: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(100, 70, 50, 0.03);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(180, 130, 105, 0.45);
+            box-shadow: 0 12px 30px rgba(100, 70, 50, 0.08);
+        }
+
+        /* Column Span Helpers */
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-7 { grid-column: span 7; }
+        .col-6 { grid-column: span 6; }
+        .col-5 { grid-column: span 5; }
+        .col-4 { grid-column: span 4; }
+
+        /* Featured Tinted Cards */
+        .bento-card.featured-pro {
+            background: linear-gradient(135deg, #fbf2f5 0%, #ffffff 100%);
+            border-color: rgba(220, 140, 165, 0.35);
+        }
+
+        .bento-card.featured-standard {
+            background: linear-gradient(135deg, #fef8ee 0%, #ffffff 100%);
+            border-color: rgba(235, 175, 95, 0.35);
+        }
+
+        .bento-card.featured-free {
+            background: linear-gradient(135deg, #f0faf3 0%, #ffffff 100%);
+            border-color: rgba(140, 215, 175, 0.35);
+        }
+
+        .bento-card.featured-beta {
+            background: linear-gradient(135deg, #f3f4fd 0%, #ffffff 100%);
+            border-color: rgba(165, 175, 245, 0.35);
+        }
+
+        .bento-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .bento-icon-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bento-icon-wrapper {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #f4eee6;
+            border: 1px solid rgba(180, 140, 120, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b2318;
+            flex-shrink: 0;
+        }
+
+        .bento-icon-wrapper svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .bento-card-heading {
+            font-size: 17px;
+            font-weight: 800;
+            color: #1c1917;
+            margin: 0;
+            font-family: 'Satoshi', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .bento-badge-pill {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: #ede5da;
+            color: #443e38;
+            text-transform: uppercase;
+        }
+
+        .bento-badge-pill.gated {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        /* Clean, Standard Flowing Bullet List */
+        .bento-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 14px;
+            color: #57534e;
+            line-height: 1.6;
+        }
+
+        .bento-list li {
+            position: relative;
+            padding-left: 16px;
+            line-height: 1.6;
+            display: block;
+        }
+
+        .bento-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #c86d51;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .bento-list li strong {
+            color: #1c1917;
+            font-weight: 700;
+        }
+
+        /* Live Command Example Chip */
+        .command-chip {
+            background: #f4eee6;
+            border: 1px solid rgba(180, 140, 120, 0.2);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 12.5px;
+            color: #5a3c2c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .command-chip .voice-wave-mini {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .command-chip .voice-wave-mini span {
+            width: 2px;
+            height: 10px;
+            background: #c86d51;
+            border-radius: 1px;
+            animation: wave-bar 1.2s infinite ease-in-out;
+        }
+
+        .command-chip .voice-wave-mini span:nth-child(2) { animation-delay: 0.2s; height: 14px; }
+        .command-chip .voice-wave-mini span:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+
+        @keyframes wave-bar {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.2); }
+        }
+
+        /* Action Tags Cluster */
+        .action-tag-cluster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .action-chip {
+            background: #f7f3ee;
+            border: 1px solid rgba(180, 140, 120, 0.2);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #443e38;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .action-chip:hover {
+            background: #ffffff;
+            color: #1c1917;
+            border-color: rgba(180, 130, 105, 0.4);
+        }
+
+        .action-chip.gated {
+            border-color: #fde68a;
+            background: #fef9ea;
+            color: #92400e;
+        }
+
+        /* Boundary Box */
+        .tier-boundary-box {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 14px;
+            font-size: 13.5px;
+            color: #991b1b;
+            line-height: 1.55;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tier-boundary-box strong {
+            color: #7f1d1d;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ========================================================================= */
+        /* COMPARISON MATRIX (Clean Light Glass Table)                               */
+        /* ========================================================================= */
+        .matrix-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 18px;
+            border: 1px solid rgba(180, 140, 120, 0.25);
+            background: #ffffff;
+            margin-top: 16px;
+            box-shadow: 0 4px 16px rgba(100, 70, 50, 0.04);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .matrix-table th {
+            background: #f4eee6;
+            color: #1c1917;
+            font-weight: 800;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(180, 140, 120, 0.2);
+            white-space: nowrap;
+        }
+
+        .matrix-table td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f2ede4;
+            color: #44403c;
+        }
+
+        .matrix-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .matrix-table tr:hover td {
+            background: #faf6f0;
+        }
+
+        .status-check { color: #059669; font-weight: 700; }
+        .status-cross { color: #a8a29e; }
+        .status-warn { color: #d97706; font-weight: 600; }
+        .status-pro { color: #a22c4f; font-weight: 800; }
+
+        /* Showcase Bottom Action Footer */
+        .showcase-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 36px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(180, 140, 120, 0.2);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .showcase-footer-text {
+            font-size: 15px;
+            color: #57534e;
+            font-weight: 500;
+        }
+
+        .showcase-waitlist-btn {
+            background: #1c1917;
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 18px rgba(28, 25, 23, 0.2);
+        }
+
+        .showcase-waitlist-btn:hover {
+            transform: translateY(-2px);
+            background: #000000;
+            box-shadow: 0 8px 24px rgba(28, 25, 23, 0.3);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .products-header {
+                height: 88px;
+                padding: 0 32px;
+            }
+            .products-header .header-logo-img {
+                height: 56px;
+            }
+            .products-main {
+                padding-top: 88px;
+            }
+            .capabilities-overlay-container {
+                top: 88px;
+                height: calc(100vh - 88px);
+                padding: 18px 24px 80px;
+            }
+            .bento-shell {
+                padding: 32px 28px;
+            }
+            .col-8, .col-7, .col-6, .col-5, .col-4 {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-header {
+                height: 72px;
+                padding: 0 20px;
+            }
+            .products-header .header-logo-img {
+                height: 46px;
+            }
+            .products-header .nav-right a {
+                display: none;
+            }
+            .products-header .mobile-menu-toggle {
+                display: block;
+                color: #000000;
+            }
+            .products-main {
+                padding-top: 72px;
+            }
+            .capabilities-overlay-container {
+                top: 72px;
+                height: calc(100vh - 72px);
+                padding: 12px 12px 80px;
+            }
+            .bento-shell {
+                padding: 24px 16px;
+                border-radius: 24px;
+            }
+            .products-layout {
+                padding: 16px 16px 60px;
+                justify-content: center;
+            }
+            .products-left-panel .akira-card-frame {
+                width: 100%;
+                height: 540px;
+            }
+            .segmented-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="products-page">
+    <header class="products-header">
+        <div class="nav-left"></div>
+        <div class="nav-center">
+            <a href="index.html" aria-label="Go to home" class="logo-link">
+                <img src="Screenshot 2026-08-26 000343-Photoroom.png" alt="Momentum Labs Logo" class="header-logo-img">
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="products.html" class="active">PRODUCTS</a>
+            <a href="index.html#waitlist">WAITLIST</a>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="products-main">
+        <div class="products-main-content">
+            <div class="products-layout">
+                <div class="products-left-panel">
+                    <div class="products-card-row">
+                        <!-- Akira Showcase Card -->
+                        <div class="akira-card-frame theme-light" id="products-akira-card">
+                            <div class="akira-card-hero" id="akira-card-hero">
+                                <img src="card.png" alt="Akira Portrait" class="akira-card-hero-img">
+                            </div>
+                            <div class="akira-card-overlay frosted-blur">
+                                <div class="akira-card-header-row">
+                                    <h3 class="akira-card-title-text" id="products-akira-title" title="Click to view all actions Akira can perform">Akira</h3>
+                                    <button id="akira-card-dropdown-toggle" class="akira-card-dropdown-toggle" aria-expanded="false" aria-label="Toggle Akira Details">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron-icon">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="akira-card-tagline">Personal AI Partner | Living in your computer</p>
+                                <div id="akira-card-dropdown-panel" class="akira-card-dropdown-panel" hidden>
+                                    <ul class="akira-traits-list">
+                                        <li><span>•</span> Warm, sharp partner — invested in your growth without sugarcoating</li>
+                                        <li><span>•</span> Carries real context — remembers what you build, struggle with, & win</li>
+                                        <li><span>•</span> Calls out excuses plainly — dry-witted, direct, never customer-service robotic</li>
+                                        <li><span>•</span> Adapts to your energy — crisp in work mode, relaxed when chilling, steady at 2am</li>
+                                    </ul>
+                                </div>
+                                <div class="akira-card-footer">
+                                    <div class="akira-card-metrics">
+                                        <div class="metric-item" title="Waitlist Application Count">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            <span id="waitlist-count-display">100+</span>
+                                        </div>
+                                        <button id="akira-like-btn" class="metric-item metric-like-btn" aria-label="Like Akira" title="Like Akira">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="metric-icon heart-icon">
+                                                <defs><linearGradient id="neonPinkGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff007f"/><stop offset="50%" stop-color="#ff2a85"/><stop offset="100%" stop-color="#ff758c"/></linearGradient></defs>
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                            <span id="like-count-display">60</span>
+                                        </button>
+                                    </div>
+                                    <button id="products-waitlist-btn" class="akira-waitlist-btn">Join Waitlist +</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side Bottom Teaser (Satoshi Bold & Small) -->
+                        <div class="side-bottom-teaser-wrap">
+                            <div class="models-teaser-line">
+                                <span class="teaser-pulse-dot"></span>
+                                <span>Other models coming soon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- LIGHT LUXURY BENTO CAPABILITIES DIRECTORY OVERLAY                         -->
+        <!-- ========================================================================= -->
+        <div id="akira-capabilities-overlay" class="capabilities-overlay-container" role="dialog" aria-modal="true" aria-labelledby="showcase-title" hidden>
+            <div class="capabilities-backdrop" id="capabilities-backdrop"></div>
+            
+            <div class="bento-shell">
+                <button id="close-capabilities-btn" class="capabilities-close-btn" aria-label="Close Showcase" title="Close (ESC)">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+
+                <!-- Top Header -->
+                <div class="showcase-header">
+                    <div class="showcase-badge-row">
+                        <div class="showcase-badge">
+                            <span class="badge-glow"></span>
+                            Sensei Platform &bull; Akira Action Directory
+                        </div>
+                    </div>
+                    <h2 id="showcase-title" class="showcase-title">
+                        What Akira Can Do <span class="accent-grad">Across All Tiers</span>
+                    </h2>
+                    <p class="showcase-lead">
+                        From zero-cost everyday voice interactions to autonomous background multi-tasking and deep codebase synthesis — explore the full capability suite across <strong>Free</strong>, <strong>Standard</strong>, <strong>Pro</strong>, and the <strong>Beta</strong> sandbox.
+                    </p>
+                </div>
+
+                <!-- Segmented Filter Bar -->
+                <div class="segmented-filter-bar">
+                    <div class="segmented-pill-group">
+                        <button class="segment-pill active" data-target="all">All Tiers</button>
+                        <button class="segment-pill" data-target="free">
+                            <span class="tier-dot free"></span>
+                            Free Tier
+                        </button>
+                        <button class="segment-pill" data-target="standard">
+                            <span class="tier-dot standard"></span>
+                            Standard
+                        </button>
+                        <button class="segment-pill" data-target="pro">
+                            <span class="tier-dot pro"></span>
+                            Pro Tier
+                        </button>
+                        <button class="segment-pill" data-target="beta">
+                            <span class="tier-dot beta"></span>
+                            Beta Testers
+                        </button>
+                        <button class="segment-pill" data-target="matrix">Comparison</button>
+                    </div>
+
+                    <div class="action-search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="action-filter-input" class="action-search-input" placeholder="Search actions (e.g. Spotify, Word, Git)...">
+                    </div>
+                </div>
+
+                <!-- ============================================================= -->
+                <!-- PRO TIER BENTO SHOWCASE                                       -->
+                <!-- ============================================================= -->
+                <section class="tier-showcase-section" id="tier-section-pro">
+                    <div class="tier-header-banner">
+                        <div class="tier-title-lockup">
+                            <h3 class="tier-hero-title">Pro Tier</h3>
+                            <span class="tier-tag pro">Flagship Autonomous AI Suite</span>
+                        </div>
+                    </div>
+                    <p class="tier-subtitle-text">The apex tier built for power users and engineers requiring true agentic autonomy, non-blocking background daemons, AI document drafting, and deep codebase synthesis.</p>
+
+                    <div class="bento-grid">
+                        <!-- Featured Hero: Non-Blocking Background Daemon -->
+                        <div class="bento-card col-8 featured-pro">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="background: #fae8ee; border-color: #f7cbd7; color: #a22c4f;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">True Non-Blocking Async Multi-Tasking Daemon</h4>
+                                    </div>
+                                    <span class="bento-badge-pill" style="color: #a22c4f; background: #faebef;">Zero Dead Air</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 14px;">
+                                    <li>Dispatches multi-minute heavy tasks (codebase ingestion, vault architecting, multi-page drafting) to background worker threads.</li>
+                                    <li><strong>Parallel Voice Flow:</strong> Continue talking, browsing, or issuing commands freely while background jobs execute.</li>
+                                    <li>Automatic spoken announcements when tasks finish, without interrupting active speech.</li>
+                                </ul>
+                            </div>
+                            <div class="command-chip">
+                                <div class="voice-wave-mini"><span></span><span></span><span></span></div>
+                                <span>"Akira, how's that repository analysis going?"</span>
+                            </div>
+                        </div>
+
+                        <!-- Reliability-Streak Trust Protocol -->
+                        <div class="bento-card col-4">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #a22c4f;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Reliability Streaks</h4>
+                                    </div>
+                                    <span class="bento-badge-pill">Autonomous Trust</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Tracks consecutive successful confirmations per action type to build a trust ledger.</li>
+                                    <li><strong>Autonomous Mode:</strong> Unlocks unattended execution after 3 successful supervised confirmations.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">3-Streak Ledger</span>
+                                <span class="action-chip">Auto-Demotion on Error</span>
+                            </div>
+                        </div>
+
+                        <!-- Multimodal Word AI & Auto-Image Pass -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #a22c4f;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Multimodal Word AI + Auto-Image Pass</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Full Document Drafting:</strong> Generates multi-page Word documents with Heading 1 and 2 styling, bullet lists, and executive summaries.</li>
+                                    <li><strong>Automated Visual Research:</strong> Scans sections, queries web image search, downloads relevant high-resolution photos, and embeds them directly under section headers.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">office_control|word|generate</span>
+                                <span class="action-chip">File-to-Doc Ingestion</span>
+                            </div>
+                        </div>
+
+                        <!-- Complete Obsidian Knowledge Vault Architect -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #6d28d9;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Complete Obsidian Knowledge Vault</h4>
+                                    </div>
+                                    <span class="bento-badge-pill" style="color: #6d28d9; background: #f3e8ff;">Pro Exclusive</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Autonomous Vault Architect:</strong> Hands raw transcripts or clipboard dumps to deep reasoning to build multi-note graph vaults with wikilinks and Mermaid diagrams.</li>
+                                    <li>Logs timestamped progress bullets to Progress Log, generates Map of Content index notes, and manages Focus Mode.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">Wikilinks Graph</span>
+                                <span class="action-chip">Mermaid Flowcharts</span>
+                                <span class="action-chip">Map of Content</span>
+                            </div>
+                        </div>
+
+                        <!-- Deep GitHub Codebase Ingestion -->
+                        <div class="bento-card col-7">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #4338ca;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Deep GitHub Architectural Ingestion</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Ingests entire GitHub production repositories in the background; filters vendor trees and lockfiles.</li>
+                                    <li>Identifies system entry points, plans blueprints, and generates interconnected technical documentation vaults into Obsidian.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">plan_repo_outline</span>
+                                <span class="action-chip">write_note_bodies</span>
+                            </div>
+                        </div>
+
+                        <!-- Generative AI Workspace Suite -->
+                        <div class="bento-card col-5">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #a22c4f;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Generative AI Workspace</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Google Docs:</strong> From brief to clean, structured, formatted documents.</li>
+                                    <li><strong>Google Sheets:</strong> Generates structured table datasets with headers and formulas.</li>
+                                    <li><strong>Google Slides:</strong> Generates multi-slide presentation decks with speaker notes.</li>
+                                    <li><strong>Gmail:</strong> Composes complete email drafts into compose windows for review.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================= -->
+                <!-- STANDARD TIER BENTO SHOWCASE                                  -->
+                <!-- ============================================================= -->
+                <section class="tier-showcase-section" id="tier-section-standard">
+                    <div class="tier-header-banner">
+                        <div class="tier-title-lockup">
+                            <h3 class="tier-hero-title">Standard Tier</h3>
+                            <span class="tier-tag standard">Interactive Workspace Powerhouse</span>
+                        </div>
+                    </div>
+                    <p class="tier-subtitle-text">Includes all Free Tier features plus: full interactive mastery over system power, files, Microsoft Office COM, Google Workspace interactive CRUD, and GitHub — with spoken safety confirmations.</p>
+
+                    <div class="bento-grid">
+                        <!-- Microsoft Office Automation -->
+                        <div class="bento-card col-7 featured-standard">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="background: #fdf3e2; border-color: #fbd38d; color: #b45309;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Microsoft Office Win32 COM Suite</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Word:</strong> Dictate text at active cursor, apply fonts, colors, highlights, lists, and heading styles.</li>
+                                    <li><strong>Excel:</strong> Read/write cells, inject calculation formulas (=SUM, =AVERAGE), format ranges, and create native charts (bar, line, pie, radar).</li>
+                                    <li><strong>PowerPoint:</strong> Create decks, insert layouts, populate slide content, and navigate slideshows.</li>
+                                    <li><strong>Teams:</strong> Launch and bring Teams to active focus.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">office_control|word</span>
+                                <span class="action-chip">office_control|excel</span>
+                                <span class="action-chip">office_control|powerpoint</span>
+                            </div>
+                        </div>
+
+                        <!-- Gated System Maintenance & Power -->
+                        <div class="bento-card col-5">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #b45309;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Gated System &amp; Power</h4>
+                                    </div>
+                                    <span class="bento-badge-pill gated">Spoken [C]</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Shut down, restart, sleep, hibernate, or sign out with spoken safety confirmation.</li>
+                                    <li>Clear Temp and Prefetch files, empty Recycle Bin, clear browser caches, run Disk Cleanup.</li>
+                                    <li>Force-close single apps or all running applications.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip gated">shutdown_pc [C]</span>
+                                <span class="action-chip gated">clear_temp_files [C]</span>
+                            </div>
+                        </div>
+
+                        <!-- Google Workspace Interactive CRUD -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #b45309;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Google Workspace Interactive CRUD</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Calendar:</strong> Find open time slots, create, update, and delete events.</li>
+                                    <li><strong>Docs &amp; Sheets:</strong> Create documents and spreadsheets with your dictated content.</li>
+                                    <li><strong>Gmail:</strong> Search emails, check unread counts, and draft emails with your dictated text into the browser compose window.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">calendar_control</span>
+                                <span class="action-chip">docs_control</span>
+                                <span class="action-chip">gmail_compose|draft</span>
+                            </div>
+                        </div>
+
+                        <!-- GitHub & VS Code Automation -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #b45309;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">GitHub &amp; VS Code Workspace</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Search repos by stars, clone locally via Git, star and fork repositories.</li>
+                                    <li>Create issues, submit and merge pull requests [C], delete branches and repositories [C].</li>
+                                    <li>Open project folders, search files, and edit code in VS Code [C].</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">github_control</span>
+                                <span class="action-chip">vscode_control</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tier-boundary-box">
+                        <strong>🔒 Standard Tier Boundaries</strong>
+                        <span>AI-generated content creation (generate sub-actions in Docs, Sheets, Slides, Gmail, Word) and Obsidian Knowledge Vault are Pro exclusives. Background tasks run inline/blocking only.</span>
+                    </div>
+                </section>
+
+                <!-- ============================================================= -->
+                <!-- FREE TIER BENTO SHOWCASE                                      -->
+                <!-- ============================================================= -->
+                <section class="tier-showcase-section" id="tier-section-free">
+                    <div class="tier-header-banner">
+                        <div class="tier-title-lockup">
+                            <h3 class="tier-hero-title">Free Tier</h3>
+                            <span class="tier-tag free">Zero-Cost Everyday Voice Assistant</span>
+                        </div>
+                    </div>
+                    <p class="tier-subtitle-text">The snappy, privacy-conscious daily desktop companion for system inspection, media playback, safe web browsing, and personal productivity — at zero API cost.</p>
+
+                    <div class="bento-grid">
+                        <!-- Voice & Avatar HUD -->
+                        <div class="bento-card col-6 featured-free">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="background: #e6f7ee; border-color: #a7f3d0; color: #047857;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Voice HUD &amp; Real-Time Barge-In</h4>
+                                    </div>
+                                    <span class="bento-badge-pill">Zero Latency</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Offline Wake Word:</strong> Detects "Akira" in real-time with zero cloud dependency.</li>
+                                    <li><strong>Full Barge-In Support:</strong> Interrupt Akira mid-sentence to issue a new command.</li>
+                                    <li><strong>Floating Avatar HUD:</strong> Visual companion reflecting listening, speaking, thinking, and sleep states.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">Wake Word: "Akira"</span>
+                                <span class="action-chip">Chunked Read-Aloud</span>
+                            </div>
+                        </div>
+
+                        <!-- Windows & Telemetry -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #047857;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Windows Control &amp; Telemetry HUD</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Launch apps by name, maximize, minimize, and switch active windows.</li>
+                                    <li>Adjust volume and screen brightness, take screenshots, and lock PC.</li>
+                                    <li>Verified on/off toggling for Wi-Fi and Bluetooth radios.</li>
+                                    <li>Live visual CPU, RAM, and Disk telemetry dashboard.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">performance_stats</span>
+                                <span class="action-chip">lock_pc</span>
+                                <span class="action-chip">screenshot</span>
+                            </div>
+                        </div>
+
+                        <!-- Media Hub -->
+                        <div class="bento-card col-7">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #047857;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Media, Streaming &amp; Calls</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Spotify:</strong> Play songs, playlists, live lyrics, and mood presets (calm, focus, upbeat).</li>
+                                    <li><strong>YouTube:</strong> Speed control from 0.5x to 2.0x, fullscreen, sleep timer, and likes.</li>
+                                    <li><strong>Netflix:</strong> Search titles, seek timestamps, skip intros, change subtitles and profiles.</li>
+                                    <li><strong>Google Meet:</strong> Join via link or code, toggle mic and camera, and raise hand.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">spotify_control</span>
+                                <span class="action-chip">youtube_control</span>
+                                <span class="action-chip">netflix_control</span>
+                                <span class="action-chip">meet_control</span>
+                            </div>
+                        </div>
+
+                        <!-- Safe Web Browsing & Files -->
+                        <div class="bento-card col-5">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #047857;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Browsing, Wallpaper &amp; Files</h4>
+                                    </div>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li>Google search with auto cookie-banner dismissal, tab switching, and closing.</li>
+                                    <li>Read PDFs and Word documents aloud, summarize files in 4 to 5 sentences.</li>
+                                    <li>Visual thumbnail picker to search web images and set desktop wallpaper.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tier-boundary-box">
+                        <strong>🔒 Free Tier Boundaries</strong>
+                        <span>Destructive actions (file deletions, power controls), Office/Workspace automation, Obsidian vault, and background tasks are disabled.</span>
+                    </div>
+                </section>
+
+                <!-- ============================================================= -->
+                <!-- BETA TIER (EARLY TESTER PREVIEW) BENTO SHOWCASE              -->
+                <!-- ============================================================= -->
+                <section class="tier-showcase-section" id="tier-section-beta">
+                    <div class="tier-header-banner">
+                        <div class="tier-title-lockup">
+                            <h3 class="tier-hero-title">Beta Tier</h3>
+                            <span class="tier-tag beta">Early Tester Preview Tier</span>
+                        </div>
+                    </div>
+                    <p class="tier-subtitle-text">A lightweight trial and evaluation tier designed for early testers running on free API quota. It provides the full everyday Free tier foundation along with safe, read-only inspection previews of Office and Developer tools — keeping tester environments completely quota-safe and non-destructive.</p>
+
+                    <div class="bento-grid">
+                        <!-- Full Free Tier Baseline -->
+                        <div class="bento-card col-6 featured-beta">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="background: #eef0fd; border-color: #c7d2fe; color: #4338ca;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Full Free Tier Foundation</h4>
+                                    </div>
+                                    <span class="bento-badge-pill" style="color: #4338ca; background: #e0e7ff;">Standard Baseline</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Core Voice &amp; Avatar:</strong> Full offline wake word ("Akira"), real-time barge-in VAD, and animated floating avatar HUD.</li>
+                                    <li><strong>Windows &amp; Telemetry:</strong> App window management, volume, brightness, screenshots, screen lock, and live telemetry dashboard.</li>
+                                    <li><strong>Browsing &amp; Media:</strong> Web navigation with auto cookie dismissal, semantic DOM clicks, Spotify, YouTube, Netflix, and Google Meet.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">Wake Word: "Akira"</span>
+                                <span class="action-chip">Media Hub</span>
+                                <span class="action-chip">Telemetry HUD</span>
+                            </div>
+                        </div>
+
+                        <!-- Safe Microsoft Office Inspection Previews -->
+                        <div class="bento-card col-6">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #4338ca;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Office Read &amp; Inspect Previews</h4>
+                                    </div>
+                                    <span class="bento-badge-pill" style="color: #4338ca; background: #eef2ff;">Quota-Safe</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>Word:</strong> Launch Microsoft Word, open existing documents, and read text paragraphs aloud at active cursor.</li>
+                                    <li><strong>Excel:</strong> Open workbooks, inspect worksheets, and read cells and calculated formulas aloud.</li>
+                                    <li><strong>PowerPoint &amp; Teams:</strong> Open presentation decks, navigate slides, and bring Teams to focus.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">Word Read Previews</span>
+                                <span class="action-chip">Excel Read Previews</span>
+                                <span class="action-chip">PowerPoint Nav</span>
+                            </div>
+                        </div>
+
+                        <!-- Developer Workflow Previews -->
+                        <div class="bento-card col-12">
+                            <div>
+                                <div class="bento-card-top">
+                                    <div class="bento-icon-title">
+                                        <div class="bento-icon-wrapper" style="color: #4338ca;">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                        </div>
+                                        <h4 class="bento-card-heading">Developer Workspace Inspection Previews</h4>
+                                    </div>
+                                    <span class="bento-badge-pill" style="color: #4338ca; background: #eef2ff;">Read-Only Previews</span>
+                                </div>
+                                <ul class="bento-list" style="margin-top: 12px;">
+                                    <li><strong>GitHub Search &amp; READMEs:</strong> Search public repositories by stars, read README documentation files, and inspect open issues and pull requests directly via voice.</li>
+                                    <li><strong>VS Code Ingestion:</strong> Open project folders, search directory trees, and view source code files in the editor.</li>
+                                </ul>
+                            </div>
+                            <div class="action-tag-cluster">
+                                <span class="action-chip">github_control|search</span>
+                                <span class="action-chip">github_control|readme</span>
+                                <span class="action-chip">vscode_control|read file</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tier-boundary-box">
+                        <strong>🔒 Beta Tier Boundaries</strong>
+                        <span>Google Workspace (Calendar, Docs, Sheets, Slides, Gmail), destructive operations (deletions, power controls), file overwrites/editing, background async daemons, and generative AI suites are excluded from Beta to ensure a 100% quota-safe and non-destructive tester environment.</span>
+                    </div>
+                </section>
+
+                <!-- ============================================================= -->
+                <!-- TIER COMPARISON MATRIX                                        -->
+                <!-- ============================================================= -->
+                <section class="tier-showcase-section" id="tier-section-matrix">
+                    <div class="tier-header-banner">
+                        <div class="tier-title-lockup">
+                            <h3 class="tier-hero-title">Comparison Matrix</h3>
+                            <span class="tier-tag matrix">Full Feature Matrix</span>
+                        </div>
+                    </div>
+                    <p class="tier-subtitle-text">Side-by-side comparison of execution capabilities, autonomy levels, and tool access across all tiers.</p>
+
+                    <div class="matrix-table-container">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Capability / Feature Area</th>
+                                    <th>Free Tier</th>
+                                    <th>Standard Tier</th>
+                                    <th>Pro Tier</th>
+                                    <th>Beta Tier (Tester Preview)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tier Positioning</strong></td>
+                                    <td>Zero-Cost Everyday Assistant</td>
+                                    <td>Interactive Workspace Powerhouse</td>
+                                    <td><span class="status-pro">Flagship Autonomous AI Suite</span></td>
+                                    <td>Early Tester Preview Tier</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Voice Loop &amp; Barge-In VAD</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Priority Performance</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Desktop Avatar HUD</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Safe OS Controls &amp; Telemetry</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Web Browsing &amp; DOM Click/Fill</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Media (Spotify, Netflix, YouTube)</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Safe File Read / Search / Zip</strong></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                    <td><span class="status-pro">&check; Full Support</span></td>
+                                    <td><span class="status-check">&check; Full Support</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Microsoft Office COM Suite</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Full Control</span></td>
+                                    <td><span class="status-pro">&check; Full Control + AI Generate</span></td>
+                                    <td><span class="status-warn">&bull; Read &amp; Inspect Preview</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GitHub &amp; VS Code</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Full Control</span></td>
+                                    <td><span class="status-pro">&check; + Deep Codebase Ingestion</span></td>
+                                    <td><span class="status-warn">&bull; Browse &amp; Read Preview</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Google Workspace (Calendar, Docs, Sheets, Slides)</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Interactive CRUD</span></td>
+                                    <td><span class="status-pro">&check; + AI-Generated Content</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gmail (Search, Read &amp; Compose)</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Search, Read &amp; Manual Draft</span></td>
+                                    <td><span class="status-pro">&check; + AI Email Composition</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Destructive Actions [C] (Deletions, Power)</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Spoken Confirmation</span></td>
+                                    <td><span class="status-pro">&check; Reliability Streaks</span></td>
+                                    <td><span class="status-cross">&cross; Blocked (Safe Only)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>File Overwriting &amp; Editing [C]</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-check">&check; Spoken Confirmation</span></td>
+                                    <td><span class="status-pro">&check; Reliability Streaks</span></td>
+                                    <td><span class="status-cross">&cross; Blocked (Safe Only)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Obsidian Knowledge Vault</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-pro">&check; Full Vault + Autonomous Architect</span></td>
+                                    <td><span class="status-cross">&cross; Blocked (Pro Only)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Async Multi-Task Background Queue</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-cross">&cross; Inline Only</span></td>
+                                    <td><span class="status-pro">&check; Unconstrained Multi-Tasking</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Repo Notes &amp; File-to-Doc</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-pro">&check; Full Autonomous Ingestion</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hosted Servant Acceleration</strong></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                    <td><span class="status-pro">&check; Together/Fireworks 72B</span></td>
+                                    <td><span class="status-cross">&cross; Blocked</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Footer CTA -->
+                <div class="showcase-footer">
+                    <div class="showcase-footer-text">
+                        Ready to experience Akira on your desktop?
+                    </div>
+                    <button id="modal-waitlist-btn" class="showcase-waitlist-btn">Join Waitlist +</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dropdown Toggle on the Akira Card
+            const dropdownToggle = document.getElementById('akira-card-dropdown-toggle');
+            const dropdownPanel = document.getElementById('akira-card-dropdown-panel');
+            if (dropdownToggle && dropdownPanel) {
+                dropdownToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+                    dropdownToggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+                    isExpanded ? dropdownPanel.setAttribute('hidden', '') : dropdownPanel.removeAttribute('hidden');
+                });
+            }
+
+            // Capabilities Showcase Open / Close
+            const akiraTitle = document.getElementById('products-akira-title');
+            const capabilitiesOverlay = document.getElementById('akira-capabilities-overlay');
+            const capabilitiesBackdrop = document.getElementById('capabilities-backdrop');
+            const closeCapabilitiesBtn = document.getElementById('close-capabilities-btn');
+            const triggerHintBtn = document.getElementById('trigger-capabilities-hint-btn');
+            const modalWaitlistBtn = document.getElementById('modal-waitlist-btn');
+
+            function openCapabilitiesView(e) {
+                if (e) e.preventDefault();
+                if (capabilitiesOverlay) {
+                    capabilitiesOverlay.removeAttribute('hidden');
+                    document.body.classList.add('capabilities-open');
+                }
+            }
+            function closeCapabilitiesView(e) {
+                if (e) e.preventDefault();
+                document.body.classList.remove('capabilities-open');
+                setTimeout(() => {
+                    if (!document.body.classList.contains('capabilities-open') && capabilitiesOverlay) {
+                        capabilitiesOverlay.setAttribute('hidden', '');
+                    }
+                }, 350);
+            }
+
+            if (akiraTitle) akiraTitle.addEventListener('click', openCapabilitiesView);
+            if (triggerHintBtn) triggerHintBtn.addEventListener('click', openCapabilitiesView);
+            if (closeCapabilitiesBtn) closeCapabilitiesBtn.addEventListener('click', closeCapabilitiesView);
+            if (capabilitiesBackdrop) capabilitiesBackdrop.addEventListener('click', closeCapabilitiesView);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.body.classList.contains('capabilities-open')) closeCapabilitiesView(e);
+            });
+
+            // Auto-open directory if navigated with ?showcase=true or #capabilities
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('showcase') === 'true' || urlParams.get('showcase') === 'open' || window.location.hash === '#capabilities') {
+                setTimeout(() => {
+                    openCapabilitiesView();
+                }, 100);
+            }
+
+            // Segmented Tier Tab Filtering
+            const tierTabs = document.querySelectorAll('.segment-pill');
+            const tierSections = document.querySelectorAll('.tier-showcase-section');
+            tierTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tierTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const target = tab.getAttribute('data-target');
+                    if (target === 'all') {
+                        tierSections.forEach(s => s.style.display = 'block');
+                    } else {
+                        tierSections.forEach(s => {
+                            if (s.id === `tier-section-${target}`) {
+                                s.style.display = 'block';
+                                s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else {
+                                s.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Live Action Search & Highlight Filter
+            const searchInput = document.getElementById('action-filter-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+                    const bentoCards = document.querySelectorAll('.bento-card');
+                    if (!query) {
+                        bentoCards.forEach(c => {
+                            c.style.opacity = '1';
+                            c.style.borderColor = '';
+                        });
+                        return;
+                    }
+                    bentoCards.forEach(card => {
+                        const text = card.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            card.style.opacity = '1';
+                            card.style.borderColor = 'rgba(200, 109, 81, 0.8)';
+                            card.style.background = '#fef7f4';
+                        } else {
+                            card.style.opacity = '0.35';
+                            card.style.borderColor = 'rgba(190, 160, 145, 0.15)';
+                            card.style.background = '';
+                        }
+                    });
+                });
+            }
+
+            // Waitlist Application Counter (Base 100 + real clicks)
+            const savedWaitlistCount = parseInt(localStorage.getItem('akira_waitlist_count'), 10);
+            let waitlistApplicationCount = !isNaN(savedWaitlistCount) && savedWaitlistCount >= 100 ? savedWaitlistCount : 100;
+            const waitlistCountDisplay = document.getElementById('waitlist-count-display');
+            const waitlistBtn = document.getElementById('products-waitlist-btn');
+            function updateWaitlistCountDisplay() {
+                if (waitlistCountDisplay) waitlistCountDisplay.textContent = `${waitlistApplicationCount}+`;
+                localStorage.setItem('akira_waitlist_count', waitlistApplicationCount);
+            }
+            updateWaitlistCountDisplay();
+            function handleWaitlistClick(e) {
+                e.preventDefault();
+                waitlistApplicationCount++;
+                updateWaitlistCountDisplay();
+                window.location.href = 'index.html#waitlist';
+            }
+            const teaserWaitlistBtn = document.getElementById('teaser-waitlist-btn');
+            if (waitlistBtn) waitlistBtn.addEventListener('click', handleWaitlistClick);
+            if (modalWaitlistBtn) modalWaitlistBtn.addEventListener('click', handleWaitlistClick);
+            if (teaserWaitlistBtn) teaserWaitlistBtn.addEventListener('click', handleWaitlistClick);
+
+            // Like Button & Real-time Sync
+            const likeBtn = document.getElementById('akira-like-btn');
+            const likeCountDisplay = document.getElementById('like-count-display');
+            const cardHero = document.getElementById('akira-card-hero');
+            const cardFrame = document.getElementById('products-akira-card');
+            const savedLikeCount = parseInt(localStorage.getItem('akira_like_count'), 10);
+            let likeCount = !isNaN(savedLikeCount) && savedLikeCount >= 60 ? savedLikeCount : 60;
+            let userHasLiked = localStorage.getItem('akira_user_liked') === 'true';
+
+            function triggerInstaHeartPop() {
+                if (!cardFrame) return;
+                const heart = document.createElement('div');
+                heart.className = 'insta-pop-heart';
+                heart.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
+                cardFrame.appendChild(heart);
+                setTimeout(() => { if (heart.parentNode) heart.parentNode.removeChild(heart); }, 850);
+            }
+            function updateLikeDisplay() {
+                if (likeCountDisplay) likeCountDisplay.textContent = likeCount;
+                if (likeBtn) likeBtn.classList.toggle('liked', userHasLiked);
+                localStorage.setItem('akira_like_count', likeCount);
+                localStorage.setItem('akira_user_liked', userHasLiked);
+            }
+            updateLikeDisplay();
+
+            if (likeBtn) {
+                likeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userHasLiked = !userHasLiked;
+                    if (userHasLiked) { likeCount++; triggerInstaHeartPop(); }
+                    else { likeCount = Math.max(60, likeCount - 1); }
+                    updateLikeDisplay();
+                });
+            }
+            if (cardHero) {
+                cardHero.addEventListener('dblclick', (e) => {
+                    e.preventDefault();
+                    triggerInstaHeartPop();
+                    if (!userHasLiked) { userHasLiked = true; likeCount++; updateLikeDisplay(); }
+                });
+            }
+
+            setInterval(() => {
+                likeCount++;
+                updateLikeDisplay();
+                if (likeBtn) { likeBtn.style.transform = 'scale(1.15)'; setTimeout(() => { likeBtn.style.transform = ''; }, 300); }
+            }, Math.floor(Math.random() * 8000) + 14000);
+
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'akira_like_count' || e.key === 'akira_user_liked') {
+                    likeCount = parseInt(localStorage.getItem('akira_like_count'), 10) || 60;
+                    userHasLiked = localStorage.getItem('akira_user_liked') === 'true';
+                    updateLikeDisplay();
+                }
+                if (e.key === 'akira_waitlist_count') {
+                    waitlistApplicationCount = parseInt(localStorage.getItem('akira_waitlist_count'), 10) || 100;
+                    updateWaitlistCountDisplay();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
