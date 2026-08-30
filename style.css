@@ -39,6 +39,22 @@
 }
 
 @font-face {
+    font-family: 'Nohemi';
+    src: url('nohemi-font-family/Nohemi-Regular-BF6a4e01a26b011.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Nohemi';
+    src: url('nohemi-font-family/Nohemi-Medium-BF6a4e01a26b011.ttf') format('truetype');
+    font-weight: 500 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: 'Satoshi';
     src: url('Satoshi_Complete/Satoshi_Complete/Fonts/TTF/Satoshi-Variable.ttf') format('truetype');
     font-weight: 100 900;
@@ -811,13 +827,31 @@ body {
     font-family: 'Hagrid', sans-serif;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
     cursor: pointer;
+    position: relative;
+    display: inline-block;
     transition: opacity 0.2s ease, transform 0.2s ease;
     user-select: none;
 }
 
+.akira-card-title-text::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(220, 190, 160, 0.9) 100%);
+    border-radius: 1px;
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .akira-card-title-text:hover {
-    opacity: 0.85;
+    opacity: 0.95;
     transform: translateY(-1px);
+}
+
+.akira-card-title-text:hover::after {
+    width: 100%;
 }
 
 /* Chevron Dropdown Toggle Button next to Akira's name */

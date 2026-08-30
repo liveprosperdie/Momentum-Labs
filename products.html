@@ -215,13 +215,31 @@
             font-family: 'Hagrid', sans-serif;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
             cursor: pointer;
+            position: relative;
+            display: inline-block;
             transition: opacity 0.2s ease, transform 0.2s ease;
             user-select: none;
         }
 
+        .akira-card-title-text::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(220, 190, 160, 0.9) 100%);
+            border-radius: 1px;
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         .akira-card-title-text:hover {
-            opacity: 0.85;
+            opacity: 0.95;
             transform: translateY(-1px);
+        }
+
+        .akira-card-title-text:hover::after {
+            width: 100%;
         }
 
         .akira-card-dropdown-toggle {
@@ -463,7 +481,7 @@
         }
 
         /* ========================================================================= */
-        /* EDITORIAL LUXURY CAPABILITIES OVERLAY                                     */
+        /* EDITORIAL LUXURY CAPABILITIES OVERLAY (Nohemi + Satoshi Matrix)           */
         /* ========================================================================= */
         .capabilities-overlay-container {
             position: fixed;
@@ -572,10 +590,10 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Satoshi', sans-serif;
+            font-family: 'Nohemi', sans-serif;
             font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.16em;
+            font-weight: 500;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: #786c62;
         }
@@ -588,13 +606,13 @@
         }
 
         .showcase-title {
-            font-family: 'Migha', sans-serif;
-            font-size: clamp(2.4rem, 4.4vw, 3.8rem);
-            font-weight: bold;
+            font-family: 'Nohemi', sans-serif;
+            font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+            font-weight: 500;
             letter-spacing: -0.02em;
             color: #1c1917;
             margin: 0;
-            line-height: 1.08;
+            line-height: 1.1;
         }
 
         .showcase-title span.accent-grad {
@@ -602,9 +620,9 @@
         }
 
         .showcase-lead {
-            font-size: 17px;
+            font-size: 16.5px;
             color: #57534e;
-            line-height: 1.7;
+            line-height: 1.68;
             margin: 0;
             font-family: 'Satoshi', sans-serif;
             max-width: 820px;
@@ -639,9 +657,9 @@
             background: transparent;
             border: none;
             color: #736b63;
-            font-family: 'Satoshi', sans-serif;
+            font-family: 'Nohemi', sans-serif;
             font-size: 13.5px;
-            font-weight: 700;
+            font-weight: 500;
             padding: 8px 14px;
             cursor: pointer;
             position: relative;
@@ -732,9 +750,9 @@
         }
 
         .tier-hero-title {
-            font-family: 'Migha', sans-serif;
-            font-size: clamp(28px, 3.4vw, 40px);
-            font-weight: bold;
+            font-family: 'Nohemi', sans-serif;
+            font-size: clamp(26px, 3.2vw, 38px);
+            font-weight: 500;
             color: #1c1917;
             margin: 0;
             letter-spacing: -0.015em;
@@ -743,9 +761,9 @@
         /* Metallic Foil Accents (Tier Names Only) */
         .tier-foil-tag {
             display: inline-block;
-            font-family: 'Satoshi', sans-serif;
+            font-family: 'Nohemi', sans-serif;
             font-size: 12px;
-            font-weight: 800;
+            font-weight: 500;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             position: relative;
@@ -789,7 +807,7 @@
         }
 
         /* ========================================================================= */
-        /* FULL-WIDTH EDITORIAL FEATURE SECTIONS (Apple / Aesop Style)               */
+        /* FULL-WIDTH EDITORIAL FEATURE SECTIONS (Nohemi Display + Satoshi Body)     */
         /* ========================================================================= */
         .editorial-feature-section {
             padding: 110px 0 90px 0;
@@ -816,18 +834,18 @@
             align-items: center;
             gap: 12px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             color: #8c827a;
             margin-bottom: 20px;
-            font-family: 'Satoshi', sans-serif;
+            font-family: 'Nohemi', sans-serif;
         }
 
         .editorial-eyebrow .eyebrow-num {
             color: #1c1917;
             font-variant-numeric: tabular-nums;
-            font-weight: 800;
+            font-weight: 700;
         }
 
         .editorial-eyebrow .eyebrow-dash {
@@ -867,9 +885,9 @@
         }
 
         .editorial-feature-title {
-            font-family: 'Migha', sans-serif;
-            font-size: clamp(24px, 2.8vw, 34px);
-            font-weight: bold;
+            font-family: 'Nohemi', sans-serif;
+            font-size: clamp(23px, 2.7vw, 32px);
+            font-weight: 500;
             line-height: 1.22;
             color: #1c1917;
             margin: 0;
@@ -1037,9 +1055,9 @@
         .matrix-table th {
             background: #f4eee6;
             color: #1c1917;
-            font-family: 'Migha', sans-serif;
-            font-weight: bold;
-            font-size: 14.5px;
+            font-family: 'Nohemi', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
             padding: 16px 20px;
             border-bottom: 1px solid rgba(180, 140, 120, 0.2);
             white-space: nowrap;
@@ -1203,7 +1221,7 @@
                         What Akira Can Do Across All Tiers
                     </h2>
                     <p class="showcase-lead">
-                        From zero-cost everyday voice interactions to autonomous background multi-tasking and deep codebase synthesis — explore the full capability suite across <strong>Free</strong>, <strong>Standard</strong>, <strong>Pro</strong>, and the <strong>Beta</strong> sandbox.
+                        From zero-cost voice interactions to autonomous multi-tasking and codebase synthesis — explore Akira's complete capability matrix across all tiers.
                     </p>
                 </div>
 
@@ -1233,7 +1251,7 @@
                             <h3 class="tier-hero-title">Pro Tier</h3>
                             <span class="tier-foil-tag pro">Flagship Autonomous AI Suite</span>
                         </div>
-                        <p class="tier-subtitle-text">The apex tier built for power users and engineers requiring true agentic autonomy, non-blocking background daemons, AI document drafting, and deep codebase synthesis.</p>
+                        <p class="tier-subtitle-text">The apex tier for power users requiring agentic autonomy, background daemons, AI drafting, and codebase synthesis.</p>
                     </div>
 
                     <div class="editorial-features-flow">
@@ -1253,9 +1271,9 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Dispatches multi-minute heavy tasks (codebase ingestion, vault architecting, multi-page drafting) to background worker threads.</li>
-                                    <li><strong>Parallel Voice Flow:</strong> Continue talking, browsing, or issuing commands freely while background jobs execute.</li>
-                                    <li>Automatic spoken announcements when tasks finish, without interrupting active speech.</li>
+                                    <li>Dispatches heavy tasks (codebases, vaults, document drafting) to background threads.</li>
+                                    <li><strong>Parallel Voice Flow:</strong> Keep talking and browsing freely while jobs run.</li>
+                                    <li>Non-intrusive spoken notifications upon completion.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1281,8 +1299,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Tracks consecutive successful confirmations per action type to build a trust ledger.</li>
-                                    <li><strong>Autonomous Mode:</strong> Unlocks unattended execution after 3 successful supervised confirmations.</li>
+                                    <li>Tracks successful confirmations per action type to build trust.</li>
+                                    <li><strong>Autonomous Mode:</strong> Unlocks unattended execution after 3 supervised confirmations.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">3-Streak Ledger</span>
@@ -1308,8 +1326,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Full Document Drafting:</strong> Generates multi-page Word documents with Heading 1 and 2 styling, bullet lists, and executive summaries.</li>
-                                    <li><strong>Automated Visual Research:</strong> Scans sections, queries web image search, downloads relevant high-resolution photos, and embeds them directly under section headers.</li>
+                                    <li><strong>Full Document Drafting:</strong> Generates styled multi-page Word docs with structured headings, summaries, and lists.</li>
+                                    <li><strong>Automated Visual Research:</strong> Queries web images and embeds relevant high-res photos under headers.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">office_control|word|generate</span>
@@ -1335,8 +1353,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Autonomous Vault Architect:</strong> Hands raw transcripts or clipboard dumps to deep reasoning to build multi-note graph vaults with wikilinks and Mermaid diagrams.</li>
-                                    <li>Logs timestamped progress bullets to Progress Log, generates Map of Content index notes, and manages Focus Mode.</li>
+                                    <li><strong>Autonomous Vault Architect:</strong> Converts raw transcripts into multi-note vaults with wikilinks and Mermaid diagrams.</li>
+                                    <li>Maintains timestamped logs, generates MOC index notes, and toggles Focus Mode.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">Wikilinks Graph</span>
@@ -1362,8 +1380,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Ingestion &amp; Modification:</strong> Recursively scans repositories, indexes AST trees, and executes surgical multi-file edits.</li>
-                                    <li>Automatic background test suite execution (<code>pytest</code>, <code>npm test</code>) with self-healing feedback loops on test failures.</li>
+                                    <li><strong>Ingestion &amp; Modification:</strong> Scans repos, indexes ASTs, and executes surgical multi-file edits.</li>
+                                    <li>Runs test suites (<code>pytest</code>, <code>npm test</code>) with self-healing failure loops.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1389,8 +1407,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>End-to-End Git Lifecycle:</strong> Creates feature branches, crafts semantic commits from diff inspection, pushes upstreams, and opens GitHub Pull Requests with generated markdown summaries.</li>
-                                    <li>Resolves merge conflicts and runs CI/CD checks autonomously.</li>
+                                    <li><strong>End-to-End Git Lifecycle:</strong> Creates branches, crafts semantic commits from diffs, and opens PRs with generated summaries.</li>
+                                    <li>Resolves merge conflicts and tracks CI/CD checks.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">git|branch_create</span>
@@ -1417,8 +1435,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>DOM-Level Interactive Automation:</strong> Navigates complex modern web applications, solves multi-page forms, handles authentication sessions, and scrapes dynamic JavaScript pages.</li>
-                                    <li>Captures full-page screenshots, parses DOM elements, and executes complex shopping or research workflows.</li>
+                                    <li><strong>DOM Automation:</strong> Navigates complex web apps, fills multi-page forms, handles sessions, and scrapes dynamic JS pages.</li>
+                                    <li>Captures full-page screenshots and executes multi-step research flows.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1444,8 +1462,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Advanced File Manipulation:</strong> Performs regex file transforms, automated batch conversions (PDF/DOCX/MD/CSV), metadata indexing, and duplicate hash identification.</li>
-                                    <li>Governed by Pro reliability confirmation protocols.</li>
+                                    <li><strong>Advanced File Operations:</strong> Runs regex file transforms, batch format conversions (PDF/DOCX/MD/CSV), and duplicate hash scans.</li>
+                                    <li>Governed by reliability confirmation protocols.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">fs_deep|batch_convert</span>
@@ -1460,7 +1478,7 @@
                             <div class="editorial-eyebrow">
                                 <span class="eyebrow-num">09</span>
                                 <span class="eyebrow-dash">—</span>
-                                <span class="eyebrow-text">Google Workspace Ecosystem</span>
+                                <span class="eyebrow-text">Google Workspace</span>
                                 <span class="tier-foil-tag pro">Pro Tier</span>
                             </div>
                             <div class="editorial-feature-header">
@@ -1471,8 +1489,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Gmail Intelligence:</strong> Scans inbox threads, generates context-aware email replies with tone matching, and organizes labels autonomously.</li>
-                                    <li><strong>Docs, Drive &amp; Sheets:</strong> Auto-creates spreadsheets with formula calculations, formats presentation slides, and manages cloud folder structures.</li>
+                                    <li><strong>Gmail Intelligence:</strong> Scans threads, drafts context-aware replies with tone matching, and organizes labels.</li>
+                                    <li><strong>Docs, Drive &amp; Sheets:</strong> Creates formula-backed spreadsheets, formats presentation decks, and syncs cloud directories.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">gmail|ai_draft</span>
@@ -1499,8 +1517,8 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Real-Time Visual Context:</strong> Inspects active desktop monitors, identifies UI glitches or compiler errors in real time, and provides context-aware guidance via voice.</li>
-                                    <li>OCR-powered text and image extraction from any visible application.</li>
+                                    <li><strong>Visual Context:</strong> Inspects active displays, identifies UI glitches or compiler errors, and guides you via voice.</li>
+                                    <li>OCR-powered text extraction across all visible applications.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">vision|screen_ocr</span>
@@ -1521,7 +1539,7 @@
                             <h3 class="tier-hero-title">Standard Tier</h3>
                             <span class="tier-foil-tag standard">Interactive Workspace Powerhouse</span>
                         </div>
-                        <p class="tier-subtitle-text">Expanded capability suite enabling safe interactive workspace automation, Microsoft Office suite control, deep media playback, and research scraping.</p>
+                        <p class="tier-subtitle-text">Interactive workspace automation, Microsoft Office control, deep media playback, and fast research scraping.</p>
                     </div>
 
                     <div class="editorial-features-flow">
@@ -1541,7 +1559,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Spotify, Netflix, YouTube:</strong> Comprehensive playback control, playlist search, volume leveling, and queue management via natural spoken commands.</li>
+                                    <li><strong>Spotify, Netflix, YouTube:</strong> Playback control, playlist search, volume leveling, and queue management via voice.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1567,7 +1585,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Office COM Control:</strong> Reads, edits, and formats Microsoft Word documents, Excel spreadsheets, and PowerPoint decks with spoken confirmation.</li>
+                                    <li><strong>Office COM Control:</strong> Reads, edits, and formats Word docs, Excel spreadsheets, and PowerPoint decks.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">office|word_read</span>
@@ -1593,7 +1611,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Instant Web Synthesis:</strong> Searches top search engines, parses clean article markdown, extracts key takeaways, and reads aloud summaries in real-time.</li>
+                                    <li><strong>Instant Web Synthesis:</strong> Searches search engines, parses clean article markdown, and extracts key takeaways.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1619,8 +1637,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Smart Folder Sorting:</strong> Categorizes Downloads and Desktop clutter by file type, date modified, or project association.</li>
-                                    <li>Creates zip archives and extracts compressed folders.</li>
+                                    <li><strong>Smart Folder Sorting:</strong> Cleans Downloads and Desktop by type, date, or project. Creates and extracts zip archives.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">fs|sort_directory</span>
@@ -1646,7 +1663,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Daily Notes &amp; Quick Capture:</strong> Appends timestamped voice notes, checklists, and meeting takeaways to your Obsidian daily note.</li>
+                                    <li><strong>Quick Capture:</strong> Appends timestamped voice notes, checklists, and meeting takeaways to Obsidian daily notes.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1672,7 +1689,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Hardware Monitoring:</strong> Reports live CPU utilization, memory pressure, battery health, thermal statistics, and active background processes.</li>
+                                    <li><strong>Hardware Monitoring:</strong> Reports live CPU load, memory pressure, battery health, thermal stats, and active processes.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">system|cpu_stat</span>
@@ -1693,7 +1710,7 @@
                             <h3 class="tier-hero-title">Free Tier</h3>
                             <span class="tier-foil-tag free">Zero-Cost Everyday Voice Assistant</span>
                         </div>
-                        <p class="tier-subtitle-text">Completely free, fully private voice companion loop for everyday PC navigation, system adjustments, media playback, and instant voice Q&amp;A.</p>
+                        <p class="tier-subtitle-text">Free, private voice companion loop for PC navigation, system adjustments, playback, and voice Q&amp;A.</p>
                     </div>
 
                     <div class="editorial-features-flow">
@@ -1714,7 +1731,7 @@
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
                                     <li><strong>Zero-Latency Voice Loop:</strong> Fluid two-way vocal dialogue with instant barge-in interruption.</li>
-                                    <li>Floating desktop avatar with animated visual lip-sync and state indicators (<code>idle</code>, <code>listening</code>, <code>speaking</code>).</li>
+                                    <li>Floating desktop avatar with animated lip-sync and state indicators (<code>idle</code>, <code>listening</code>, <code>speaking</code>).</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1740,7 +1757,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Adjust screen brightness, volume master, toggle Wi-Fi / Bluetooth, launch applications, and inspect network state.</li>
+                                    <li>Adjust brightness, system volume, toggle Wi-Fi/Bluetooth, launch apps, and inspect network state.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">system|volume_set</span>
@@ -1767,7 +1784,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Opens specific URLs, navigates default browser tabs, triggers searches on Google / Wikipedia / Reddit, and switches active windows.</li>
+                                    <li>Opens URLs, navigates browser tabs, triggers web searches, and switches active windows.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1793,7 +1810,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Play, pause, skip track, previous track, and mute audio across system media players.</li>
+                                    <li>Play, pause, skip tracks, and mute system media players.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">media|play_pause</span>
@@ -1819,7 +1836,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Read-only file inspection, directory tree listing, and size calculation for specified paths.</li>
+                                    <li>Read-only file inspection, directory tree listings, and folder size calculations.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">fs|file_exists</span>
@@ -1845,7 +1862,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Instant voice answers to coding questions, mathematical computations, unit conversions, and conceptual queries powered by fast on-device or cloud LLMs.</li>
+                                    <li>Instant spoken answers to coding queries, math, conversions, and conceptual questions via on-device/cloud LLMs.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1866,7 +1883,7 @@
                             <h3 class="tier-hero-title">Beta Testers</h3>
                             <span class="tier-foil-tag beta">Early Tester Preview Tier</span>
                         </div>
-                        <p class="tier-subtitle-text">Dedicated early access program for developers exploring cutting-edge capabilities and testing experimental tools before general release.</p>
+                        <p class="tier-subtitle-text">Early access program for developers testing experimental tools and models before general release.</p>
                     </div>
 
                     <div class="editorial-features-flow">
@@ -1886,7 +1903,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Direct access to experimental flagship frontier model checkpoints with extended context windows for evaluation and feedback.</li>
+                                    <li>Direct access to experimental frontier model checkpoints with extended context windows for evaluation.</li>
                                 </ul>
                                 <div class="editorial-command-chip">
                                     <div class="voice-wave-mini"><span></span><span></span><span></span></div>
@@ -1912,7 +1929,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Read-only codebase parsing and AST code inspection sandbox.</li>
+                                    <li>Read-only codebase parsing and AST code inspection.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">code|inspect_tree</span>
@@ -1938,7 +1955,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Generates bidirectional link drafts and experimental graph diagrams for Markdown vaults.</li>
+                                    <li>Generates bidirectional link drafts and experimental vault graphs.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">obsidian|link_draft</span>
@@ -1963,7 +1980,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li>Preview of DOM form filling and research web crawler with safety sandbox restrictions.</li>
+                                    <li>Preview of DOM form-filling and research crawling under sandbox.</li>
                                 </ul>
                                 <div class="editorial-tags-cluster">
                                     <span class="editorial-action-chip">browser|crawl_preview</span>
@@ -1988,7 +2005,7 @@
                             </div>
                             <div class="editorial-feature-body">
                                 <ul class="editorial-prose-points">
-                                    <li><strong>Safe Testing Scope:</strong> To protect user environments during early testing, destructive modifications and Google Workspace integrations are disabled in this tier.</li>
+                                    <li><strong>Safe Testing Scope:</strong> Destructive file modifications and Google Workspace integrations are disabled in this tier.</li>
                                 </ul>
                                 <div class="editorial-boundary-box">
                                     <strong>&bull; Beta Boundary Protection:</strong> Excludes Google Workspace integrations (Gmail, Docs, Drive, Sheets) and destructive file modifications.
@@ -2185,7 +2202,6 @@
                 if (capabilitiesOverlay) {
                     capabilitiesOverlay.removeAttribute('hidden');
                     document.body.classList.add('capabilities-open');
-                    // Trigger initial reveal calculation
                     setTimeout(initScrollReveal, 50);
                 }
             }
@@ -2206,6 +2222,12 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && document.body.classList.contains('capabilities-open')) closeCapabilitiesView(e);
             });
+
+            // Auto-open directory if navigated with ?showcase=true or #capabilities
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('showcase') === 'true' || urlParams.get('showcase') === 'open' || window.location.hash === '#capabilities') {
+                openCapabilitiesView();
+            }
 
             // IntersectionObserver Single Unified Scroll Reveal per Section
             let revealObserver = null;
@@ -2233,12 +2255,6 @@
                         s.classList.add('is-revealed');
                     }
                 });
-            }
-
-            // Auto-open directory if navigated with ?showcase=true or #capabilities
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('showcase') === 'true' || urlParams.get('showcase') === 'open' || window.location.hash === '#capabilities') {
-                openCapabilitiesView();
             }
             initScrollReveal();
 
@@ -2298,7 +2314,7 @@
                 cells.forEach(cell => {
                     cell.addEventListener('mouseenter', () => {
                         const colIdx = cell.cellIndex;
-                        if (colIdx === 0) return; // Skip label column
+                        if (colIdx === 0) return;
                         const rows = matrixTable.querySelectorAll('tr');
                         rows.forEach(r => {
                             if (r.cells[colIdx]) {
