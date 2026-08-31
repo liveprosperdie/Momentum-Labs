@@ -569,6 +569,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const hpValue = document.getElementById('waitlist-hp')?.value || '';
+
             // Set loading state
             setFormLoading(true);
 
@@ -578,7 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email })
+                    body: JSON.stringify({ email, company_website: hpValue })
                 });
 
                 const data = await response.json().catch(() => ({}));

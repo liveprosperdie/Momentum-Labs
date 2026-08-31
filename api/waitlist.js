@@ -65,6 +65,16 @@ export default async function handler(req, res) {
       }
     }
 
+    // 2. Bot Honeypot Check (Silently return success without saving or sending email)
+    const honeypot = body?.company_website || body?.hp;
+    if (honeypot && typeof honeypot === 'string' && honeypot.trim()) {
+      console.warn('Bot detected via honeypot field. Silently dropping signup.');
+      return res.status(200).json({
+        success: true,
+        message: "You're on the list — we'll email you when it's your turn."
+      });
+    }
+
     const rawEmail = body?.email;
     if (!rawEmail || typeof rawEmail !== 'string') {
       return res.status(400).json({ error: 'Please enter an email address.' });

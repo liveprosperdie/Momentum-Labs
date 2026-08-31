@@ -1736,6 +1736,18 @@ body.in-masthead-view .taskbar-bar {
     }
 }
 
+/* Off-screen Honeypot Field */
+.hp-wrap {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+
 /* Contact Us Modal & Form Styling */
 .contact-form {
     display: flex;

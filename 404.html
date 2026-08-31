@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Page Not Found | Momentum Labs</title>
+    <meta name="description" content="The page you requested could not be found. Return to Momentum Labs homepage.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="legal.css">
+    <style>
+        .error-page-body {
+            background-color: #faf7f2;
+            background-image: 
+                radial-gradient(800px 400px at 50% 0%, rgba(224, 150, 120, 0.08), transparent),
+                radial-gradient(600px 300px at 80% 80%, rgba(210, 170, 140, 0.05), transparent);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: 'Satoshi', sans-serif;
+            color: #1c1917;
+            margin: 0;
+        }
+
+        .error-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 24px;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .error-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Nohemi', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #786c62;
+            background: rgba(180, 140, 120, 0.12);
+            border: 1px solid rgba(180, 140, 120, 0.22);
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .error-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #d97706;
+        }
+
+        .error-title {
+            font-family: 'Nohemi', sans-serif;
+            font-size: clamp(36px, 6vw, 52px);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            color: #1c1917;
+            line-height: 1.1;
+            margin: 0 0 16px 0;
+        }
+
+        .error-subtitle {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #57534e;
+            margin: 0 0 32px 0;
+            max-width: 480px;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .error-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1c1917;
+            color: #ffffff;
+            border-radius: 100px;
+            padding: 13px 28px;
+            font-size: 14.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .error-btn-primary:hover {
+            background: #000000;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .error-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            color: #1c1917;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 100px;
+            padding: 13px 26px;
+            font-size: 14.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .error-btn-secondary:hover {
+            background: #f5f2ec;
+            border-color: #1c1917;
+        }
+    </style>
+</head>
+<body class="error-page-body">
+
+    <!-- Header Navigation -->
+    <header class="legal-header">
+        <a href="index.html" class="legal-header-brand">
+            <img src="Screenshot 2026-08-26 000343-Photoroom.png" alt="Momentum Labs Logo" class="legal-header-logo">
+            <span class="legal-header-name">Momentum Labs</span>
+        </a>
+        <nav class="legal-header-nav">
+            <a href="index.html" class="legal-nav-link">Home</a>
+            <a href="products.html" class="legal-nav-link">Products</a>
+            <a href="about.html" class="legal-nav-link">About</a>
+            <a href="index.html#waitlist" class="legal-nav-btn">Join Waitlist</a>
+        </nav>
+    </header>
+
+    <!-- Main Error Content -->
+    <main class="error-main">
+        <div class="error-badge">
+            <span class="error-badge-dot"></span>
+            404 Error &bull; Route Not Found
+        </div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-subtitle">
+            The page you're looking for doesn't exist, has been relocated, or is temporarily unavailable.
+        </p>
+        <div class="error-actions">
+            <a href="index.html" class="error-btn-primary">Return to Homepage &rarr;</a>
+            <a href="products.html" class="error-btn-secondary">Explore Products</a>
+        </div>
+    </main>
+
+    <!-- Simple Bottom Footer -->
+    <footer class="legal-footer">
+        <div>&copy; 2026 Momentum Labs &bull; India &amp; Worldwide Distributed</div>
+        <div class="legal-footer-links">
+            <a href="about.html">About</a>
+            <a href="products.html">Products</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+    </footer>
+
+</body>
+</html>

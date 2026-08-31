@@ -192,6 +192,10 @@
 
             <!-- Waitlist Form (Default & Loading States) -->
             <form id="waitlist-form" class="editorial-waitlist-form" novalidate>
+                <!-- Off-screen Bot Honeypot -->
+                <div class="hp-wrap" aria-hidden="true">
+                    <input type="text" name="company_website" id="waitlist-hp" tabindex="-1" autocomplete="off">
+                </div>
                 <div class="editorial-input-wrapper" id="waitlist-input-wrapper">
                     <input 
                         type="email" 
@@ -200,6 +204,7 @@
                         class="editorial-email-input" 
                         placeholder="Enter your email address..." 
                         autocomplete="email" 
+                        maxlength="254"
                         required 
                         aria-label="Email address for waitlist"
                     >
