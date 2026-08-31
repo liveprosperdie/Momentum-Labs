@@ -2,13 +2,16 @@ import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { Redis } from '@upstash/redis';
 
-// Initialize Upstash Redis client if credentials are configured
-let redis = null;
-if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-  redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
-  });
+// Initialize Upstash Redis client dynamically
+let redisClient = null;
+function getRedis() {
+  if (redisClient) return redisClient;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) {
+    redisClient = new Redis({ url, token });
+  }
+  return redisClient;
 }
 
 // IP-based Rate Limiter (Max 3 submissions per IP per 1-hour window)
@@ -44,6 +47,8 @@ function isInMemoryRateLimited(ip) {
 }
 
 async function isRateLimited(ip) {
+  const redis = getRedis();
+
   // 1. Primary: Upstash Redis (Persistent across serverless instances)
   if (redis) {
     try {
