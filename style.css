@@ -81,6 +81,8 @@ html {
 
 body {
     background-color: #f7f9f6;
+    font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1c1917;
     overflow-x: hidden;
     width: 100%;
 }
@@ -1749,10 +1751,20 @@ body.in-masthead-view .taskbar-bar {
 }
 
 /* Contact Us Modal & Form Styling */
+.editorial-waitlist-sub {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 15px;
+    color: #57534e;
+    line-height: 1.55;
+    margin: 0 0 24px 0;
+    max-width: 480px;
+}
+
 .contact-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    font-family: 'Satoshi', sans-serif;
 }
 
 .contact-field-row {
@@ -1775,6 +1787,7 @@ body.in-masthead-view .taskbar-bar {
 }
 
 .contact-label {
+    font-family: 'Satoshi', sans-serif;
     font-size: 11.5px;
     font-weight: 600;
     letter-spacing: 0.05em;
@@ -1789,7 +1802,7 @@ body.in-masthead-view .taskbar-bar {
     border: 1px solid rgba(180, 140, 120, 0.28);
     border-radius: 12px;
     padding: 12px 14px;
-    font-family: inherit;
+    font-family: 'Satoshi', sans-serif;
     font-size: 14px;
     color: #1c1917;
     outline: none;
@@ -1801,6 +1814,7 @@ body.in-masthead-view .taskbar-bar {
     min-height: 100px;
     resize: vertical;
     line-height: 1.5;
+    font-family: 'Satoshi', sans-serif;
 }
 
 .contact-input:focus,
@@ -1827,7 +1841,7 @@ body.in-masthead-view .taskbar-bar {
     border: none;
     border-radius: 100px;
     padding: 13px 28px;
-    font-family: inherit;
+    font-family: 'Satoshi', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -1851,6 +1865,7 @@ body.in-masthead-view .taskbar-bar {
     border: 1px solid #fecaca;
     border-radius: 8px;
     padding: 10px 14px;
+    font-family: 'Satoshi', sans-serif;
     font-size: 13px;
     font-weight: 500;
     text-align: left;
