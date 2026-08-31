@@ -521,16 +521,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMessageDisplay = document.getElementById('success-message-display');
     const waitlistCountDisplay = document.getElementById('waitlist-count-display');
 
+    // Intentional public display offset constant (+100) added at display read time
+    const DISPLAY_OFFSET = 100;
+
     // Fetch live waitlist count from /api/waitlist-count
     async function fetchLiveWaitlistCount() {
         try {
             const res = await fetch('/api/waitlist-count');
             if (res.ok) {
                 const data = await res.json();
-                const total = data.total || 0;
-                const displayNum = Math.max(100, total);
+                const total = data.total !== undefined ? data.total : ((data.count || 0) + DISPLAY_OFFSET);
                 if (waitlistCountDisplay) {
-                    waitlistCountDisplay.textContent = `${displayNum}+`;
+                    waitlistCountDisplay.textContent = `${total}+`;
                 }
             }
         } catch (err) {
@@ -582,17 +584,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json().catch(() => ({}));
 
                 if (response.ok) {
-                    // Success state: Reveal position number and calm message
-                    const position = data.position || 1;
+                    // Success state: Generic calm confirmation message without position number
                     if (waitlistForm) waitlistForm.style.display = 'none';
                     if (waitlistSuccessState) {
                         waitlistSuccessState.removeAttribute('hidden');
-                        if (successPositionDisplay) successPositionDisplay.textContent = `#${position}`;
-                        if (successMessageDisplay) successMessageDisplay.textContent = `You're number ${position}. We'll be in touch.`;
+                        if (successMessageDisplay) {
+                            successMessageDisplay.textContent = "We'll email you directly when your spot opens.";
+                        }
                     }
                     fetchLiveWaitlistCount();
                 } else if (response.status === 409) {
                     showInlineError("You're already on the waitlist.");
+                } else if (response.status === 429) {
+                    showInlineError(data.error || 'Too many requests, please try again later.');
                 } else {
                     showInlineError(data.error || 'Unable to join waitlist. Please try again.');
                 }

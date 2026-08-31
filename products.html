@@ -1984,6 +1984,9 @@
                 });
             }
 
+            // Intentional public display offset constant (+100) added at display read time
+            const DISPLAY_OFFSET = 100;
+
             // Waitlist Application Counter (Live API count + minimum baseline)
             const waitlistCountDisplay = document.getElementById('waitlist-count-display');
             async function fetchLiveWaitlistCount() {
@@ -1991,10 +1994,9 @@
                     const res = await fetch('/api/waitlist-count');
                     if (res.ok) {
                         const data = await res.json();
-                        const total = data.total || 0;
-                        const displayNum = Math.max(100, total);
+                        const total = data.total !== undefined ? data.total : ((data.count || 0) + DISPLAY_OFFSET);
                         if (waitlistCountDisplay) {
-                            waitlistCountDisplay.textContent = `${displayNum}+`;
+                            waitlistCountDisplay.textContent = `${total}+`;
                         }
                     }
                 } catch (err) {
@@ -2083,16 +2085,19 @@
                         });
                         const data = await response.json().catch(() => ({}));
                         if (response.ok) {
-                            const position = data.position || 1;
+                            // Success state: Generic calm confirmation message without position number
                             if (waitlistForm) waitlistForm.style.display = 'none';
                             if (waitlistSuccessState) {
                                 waitlistSuccessState.removeAttribute('hidden');
-                                if (successPositionDisplay) successPositionDisplay.textContent = `#${position}`;
-                                if (successMessageDisplay) successMessageDisplay.textContent = `You're number ${position}. We'll be in touch.`;
+                                if (successMessageDisplay) {
+                                    successMessageDisplay.textContent = "We'll email you directly when your spot opens.";
+                                }
                             }
                             fetchLiveWaitlistCount();
                         } else if (response.status === 409) {
                             showInlineError("You're already on the waitlist.");
+                        } else if (response.status === 429) {
+                            showInlineError(data.error || 'Too many requests, please try again later.');
                         } else {
                             showInlineError(data.error || 'Unable to join waitlist. Please try again.');
                         }
@@ -2240,8 +2245,14 @@
 
             <!-- Success State (Revealed after submission) -->
             <div id="waitlist-success-state" class="editorial-waitlist-success" hidden>
-                <div class="success-position-number" id="success-position-display">#1</div>
-                <p class="success-calm-line" id="success-message-display">You're number 1. We'll be in touch.</p>
+                <div class="success-checkmark-wrap" style="margin-bottom: 12px;">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3 style="font-size: 22px; font-weight: 600; margin: 0 0 8px 0; color: #1c1917;">You're on the list</h3>
+                <p class="success-calm-line" id="success-message-display">We'll email you directly when your spot opens.</p>
             </div>
 
             <!-- Footer Note -->

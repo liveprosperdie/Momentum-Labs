@@ -1,11 +1,58 @@
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
+// IP-based Rate Limiter (Max 3 submissions per IP per hour)
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+const MAX_REQUESTS_PER_WINDOW = 3;
+const ipRequestHistory = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const timestamps = ipRequestHistory.get(ip) || [];
+
+  // Filter out timestamps older than the 1-hour window
+  const activeTimestamps = timestamps.filter(ts => now - ts < RATE_LIMIT_WINDOW_MS);
+
+  if (activeTimestamps.length >= MAX_REQUESTS_PER_WINDOW) {
+    ipRequestHistory.set(ip, activeTimestamps);
+    return true;
+  }
+
+  activeTimestamps.push(now);
+  ipRequestHistory.set(ip, activeTimestamps);
+
+  // Periodic memory cleanup: delete IPs with no active timestamps
+  if (ipRequestHistory.size > 5000) {
+    for (const [key, tsList] of ipRequestHistory.entries()) {
+      if (tsList.every(ts => now - ts >= RATE_LIMIT_WINDOW_MS)) {
+        ipRequestHistory.delete(key);
+      }
+    }
+  }
+
+  return false;
+}
+
+function getClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+  if (forwardedFor && typeof forwardedFor === 'string') {
+    // Vercel / reverse proxy header: first IP is client IP
+    return forwardedFor.split(',')[0].trim();
+  }
+  return req.headers['x-real-ip'] || req.socket?.remoteAddress || '127.0.0.1';
+}
+
 export default async function handler(req, res) {
   // Only allow POST
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  // 1. IP Rate Limiting Enforcement
+  const clientIp = getClientIp(req);
+  if (isRateLimited(clientIp)) {
+    return res.status(429).json({ error: 'Too many requests, please try again later.' });
   }
 
   try {
@@ -24,6 +71,10 @@ export default async function handler(req, res) {
     }
 
     const email = rawEmail.trim().toLowerCase();
+    if (email.length > 254) {
+      return res.status(400).json({ error: 'Email address must not exceed 254 characters.' });
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: 'Please enter a valid email address.' });
@@ -40,7 +91,7 @@ export default async function handler(req, res) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Check for existing signup
+    // 2. Check for existing signup (Duplicate Prevention -> 409 Conflict)
     const { data: existingUser, error: checkError } = await supabase
       .from('waitlist')
       .select('id, created_at')
@@ -56,7 +107,7 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: "You're already on the waitlist." });
     }
 
-    // Insert new row into waitlist
+    // 3. Insert new row into Supabase waitlist (Raw accurate record)
     const { data: newEntry, error: insertError } = await supabase
       .from('waitlist')
       .insert([{ email }])
@@ -68,26 +119,14 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Unable to join waitlist. Please try again.' });
     }
 
-    // Compute exact position based on created_at timestamp
-    const { count: position, error: countError } = await supabase
-      .from('waitlist')
-      .select('*', { count: 'exact', head: true })
-      .lte('created_at', newEntry.created_at);
-
-    if (countError) {
-      console.error('Error calculating waitlist position:', countError);
-    }
-
-    const finalPosition = position || 1;
-
-    // Send confirmation email via Resend
+    // 4. Send generic confirmation email via Resend (No position number shown to user)
     if (resendApiKey) {
       try {
         const resend = new Resend(resendApiKey);
         await resend.emails.send({
           from: 'Momentum Labs <hello@momentumlabs.co.in>',
           to: [email],
-          subject: "You're on the Akira waitlist", // 29 characters (< 40)
+          subject: "You're on the Akira waitlist",
           html: `<!DOCTYPE html>
 <html>
 <head>
@@ -112,18 +151,7 @@ export default async function handler(req, res) {
           </tr>
           <tr>
             <td style="padding-bottom: 28px;">
-              <p style="font-size: 15px; color: #57534e; line-height: 1.6; margin: 0;">Thank you for your interest in Akira. We are rolling out private access in small batches.</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="background-color: #f7f3ee; border-radius: 14px; border: 1px solid rgba(180, 140, 120, 0.18); padding: 24px; text-align: center;">
-              <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #8c827a; margin-bottom: 6px;">Your Queue Position</div>
-              <div style="font-size: 42px; font-weight: 600; letter-spacing: -0.03em; color: #1c1917; line-height: 1;">#${finalPosition}</div>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding-top: 28px; padding-bottom: 12px;">
-              <p style="font-size: 14px; color: #78716c; line-height: 1.6; margin: 0;">We'll email you directly with your download credentials when your spot opens.</p>
+              <p style="font-size: 15px; color: #57534e; line-height: 1.6; margin: 0;">Thank you for your interest in Akira. We're rolling out private access in small weekly batches and will email you directly with your download credentials when your spot opens.</p>
             </td>
           </tr>
           <tr>
@@ -137,14 +165,18 @@ export default async function handler(req, res) {
   </table>
 </body>
 </html>`,
-          text: `You're on the Akira waitlist.\n\nThank you for your interest in Akira. Your queue position is #${finalPosition}.\n\nWe're rolling out private access in small batches and will email you directly with your credentials when your spot opens.\n\n— Momentum Labs`
+          text: `You're on the Akira waitlist.\n\nThank you for your interest in Akira. We're rolling out private access in small weekly batches and will email you directly with your credentials when your spot opens.\n\n— Momentum Labs`
         });
       } catch (emailErr) {
         console.error('Resend email error (non-fatal):', emailErr);
       }
     }
 
-    return res.status(200).json({ position: finalPosition, count: finalPosition });
+    // Return generic confirmation message without exposing position number
+    return res.status(200).json({
+      success: true,
+      message: "You're on the list — we'll email you when it's your turn."
+    });
   } catch (err) {
     console.error('Unhandled waitlist signup error:', err);
     return res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
