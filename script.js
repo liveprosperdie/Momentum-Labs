@@ -1,5 +1,5 @@
 const canvas = document.getElementById("hero-lightpass");
-const context = canvas.getContext("2d");
+const context = canvas ? canvas.getContext("2d") : null;
 
 const frameCount = 92;
 const currentFrame = index => (
@@ -11,21 +11,26 @@ const imageObj = {
     frame: 0
 };
 
-// Preload all 92 frames in the opening sequence
-for (let i = 0; i < frameCount; i++) {
-    const img = new Image();
-    img.src = currentFrame(i);
-    images.push(img);
+if (canvas) {
+    // Preload all 92 frames in the opening sequence
+    for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+        img.src = currentFrame(i);
+        images.push(img);
+    }
 }
 
 function setCanvasSize() {
+    if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.floor(window.innerWidth * dpr);
     canvas.height = Math.floor(window.innerHeight * dpr);
     render();
 }
 
-images[0].onload = setCanvasSize;
+if (canvas && images[0]) {
+    images[0].onload = setCanvasSize;
+}
 
 function render() {
     let img = images[imageObj.frame];
@@ -498,9 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* ---------------------------------------------------- */
-    /* Waitlist Form Submission & Live Counter (Real API)   */
-    /* ---------------------------------------------------- */
+    // Reset button
+    if (resetBtn) resetBtn.addEventListener('click', resetTrial);
+});
+
+/* ---------------------------------------------------- */
+/* Global Modals, Waitlist & Contact Form Handlers       */
+/* ---------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
     const waitlistForm = document.getElementById('waitlist-form');
     const waitlistEmailInput = document.getElementById('waitlist-email-input');
     const waitlistInputWrapper = document.getElementById('waitlist-input-wrapper');
@@ -671,18 +681,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Card Waitlist CTA Button -> Closes card modal and opens waitlist modal directly
+    const cardWaitlistBtn = document.querySelector('.akira-waitlist-btn');
     if (cardWaitlistBtn) {
         cardWaitlistBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            closeModal();
+            const akiraModal = document.getElementById('akira-modal');
+            if (akiraModal) {
+                akiraModal.setAttribute('hidden', '');
+                akiraModal.style.display = 'none';
+            }
             openWaitlistModal();
         });
     }
 
-    // Logo / Home icon click -> Reset trial to idle
-    if (logoLink) {
+    // Logo / Home icon click -> Reset trial if available
+    const logoLink = document.querySelector('.logo-link');
+    if (logoLink && typeof globalResetTrial === 'function') {
         logoLink.addEventListener('click', () => {
-            resetTrial();
+            globalResetTrial();
         });
     }
 
@@ -781,8 +797,202 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Reset button
-    resetBtn.addEventListener('click', resetTrial);
+    /* ---------------------------------------------------- */
+    /* Contact Form & Contact Modal Handling                */
+    /* ---------------------------------------------------- */
+    const contactModal = document.getElementById('contact-modal');
+    const contactModalClose = document.getElementById('contact-modal-close');
+    const contactModalBackdrop = document.getElementById('contact-modal-backdrop');
+    const contactTriggers = document.querySelectorAll('.nav-contact-btn, a[href="#contact-modal"]');
+
+    function openContactModal() {
+        if (!contactModal) return;
+        contactModal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        const nameInp = document.getElementById('modal-contact-name');
+        setTimeout(() => {
+            if (nameInp) nameInp.focus();
+        }, 120);
+    }
+
+    function closeContactModal() {
+        if (!contactModal) return;
+        contactModal.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+    }
+
+    contactTriggers.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            if (contactModal) {
+                e.preventDefault();
+                openContactModal();
+            }
+        });
+    });
+
+    if (contactModalClose) contactModalClose.addEventListener('click', closeContactModal);
+    if (contactModalBackdrop) contactModalBackdrop.addEventListener('click', closeContactModal);
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactModal && !contactModal.hasAttribute('hidden')) {
+            closeContactModal();
+        }
+    });
+
+    // Helper to wire up any contact form instance (embedded or modal)
+    function wireContactForm({ formId, nameId, emailId, messageId, errorId, successId, submitBtnId }) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+
+        const nameInput = document.getElementById(nameId);
+        const emailInput = document.getElementById(emailId);
+        const messageInput = document.getElementById(messageId);
+        const errorEl = document.getElementById(errorId);
+        const successEl = document.getElementById(successId);
+        const submitBtn = document.getElementById(submitBtnId);
+
+        function showError(msg) {
+            if (errorEl) {
+                errorEl.textContent = msg;
+                errorEl.classList.add('is-visible');
+            }
+            if (successEl) {
+                successEl.classList.remove('is-visible');
+                successEl.textContent = '';
+            }
+        }
+
+        function showSuccess(msg) {
+            if (successEl) {
+                successEl.textContent = msg;
+                successEl.classList.add('is-visible');
+            }
+            if (errorEl) {
+                errorEl.classList.remove('is-visible');
+                errorEl.textContent = '';
+            }
+        }
+
+        function clearErrors() {
+            if (errorEl) {
+                errorEl.classList.remove('is-visible');
+                errorEl.textContent = '';
+            }
+        }
+
+        [nameInput, emailInput, messageInput].forEach(input => {
+            if (input) input.addEventListener('input', clearErrors);
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            const name = (nameInput?.value || '').trim();
+            const email = (emailInput?.value || '').trim();
+            const message = (messageInput?.value || '').trim();
+
+            // Client-side validation
+            if (!name) {
+                showError('Please enter your name.');
+                if (nameInput) nameInput.focus();
+                return;
+            }
+            if (name.length > 100) {
+                showError('Name must not exceed 100 characters.');
+                if (nameInput) nameInput.focus();
+                return;
+            }
+
+            if (!email) {
+                showError('Please enter your email address.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+            if (email.length > 254) {
+                showError('Email address must not exceed 254 characters.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address.');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+
+            if (!message) {
+                showError('Please enter your message.');
+                if (messageInput) messageInput.focus();
+                return;
+            }
+            if (message.length > 5000) {
+                showError('Message must not exceed 5000 characters.');
+                if (messageInput) messageInput.focus();
+                return;
+            }
+
+            // Set loading state
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                const btnText = submitBtn.querySelector('.btn-text');
+                if (btnText) btnText.textContent = 'Sending...';
+            }
+            if (nameInput) nameInput.disabled = true;
+            if (emailInput) emailInput.disabled = true;
+            if (messageInput) messageInput.disabled = true;
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const data = await response.json().catch(() => ({}));
+
+                if (response.ok) {
+                    showSuccess(data.message || "Thank you for reaching out! We've received your note and will get back to you shortly.");
+                    form.reset();
+                } else {
+                    showError(data.error || 'Failed to send your message. Please try again.');
+                }
+            } catch (err) {
+                console.error('Contact submission error:', err);
+                showError('Network error. Please check your connection and try again.');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    if (btnText) btnText.innerHTML = 'Send Message &rarr;';
+                }
+                if (nameInput) nameInput.disabled = false;
+                if (emailInput) emailInput.disabled = false;
+                if (messageInput) messageInput.disabled = false;
+            }
+        });
+    }
+
+    // Initialize both modal and on-page contact forms
+    wireContactForm({
+        formId: 'modal-contact-form',
+        nameId: 'modal-contact-name',
+        emailId: 'modal-contact-email',
+        messageId: 'modal-contact-message',
+        errorId: 'modal-contact-error',
+        successId: 'modal-contact-success',
+        submitBtnId: 'modal-contact-submit-btn'
+    });
+
+    wireContactForm({
+        formId: 'contact-form',
+        nameId: 'contact-name',
+        emailId: 'contact-email',
+        messageId: 'contact-message',
+        errorId: 'contact-error',
+        successId: 'contact-success',
+        submitBtnId: 'contact-submit-btn'
+    });
 });
 
 

@@ -1736,4 +1736,135 @@ body.in-masthead-view .taskbar-bar {
     }
 }
 
+/* Contact Us Modal & Form Styling */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+@media (max-width: 540px) {
+    .contact-field-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contact-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.contact-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #6b645c;
+}
+
+.contact-input,
+.contact-textarea {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(180, 140, 120, 0.28);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1c1917;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.contact-textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+    border-color: #1c1917;
+    box-shadow: 0 0 0 3px rgba(28, 25, 23, 0.06);
+}
+
+.contact-input:disabled,
+.contact-textarea:disabled {
+    opacity: 0.6;
+    background: #f5f2eb;
+    cursor: not-allowed;
+}
+
+.contact-submit-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #1c1917;
+    color: #ffffff;
+    border: none;
+    border-radius: 100px;
+    padding: 13px 28px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+    background: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+}
+
+.contact-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.contact-inline-error {
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    display: none;
+}
+
+.contact-inline-error.is-visible {
+    display: block;
+}
+
+.contact-inline-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    display: none;
+}
+
+.contact-inline-success.is-visible {
+    display: block;
+}
+
+
 

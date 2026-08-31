@@ -227,6 +227,47 @@
         </div>
     </div>
 
+    <!-- Contact Us Modal Overlay -->
+    <div id="contact-modal" class="waitlist-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" hidden>
+        <div class="waitlist-modal-backdrop" id="contact-modal-backdrop"></div>
+        <div class="waitlist-modal-dialog">
+            <button id="contact-modal-close" class="waitlist-modal-close" aria-label="Close contact dialog" title="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="editorial-waitlist-eyebrow">
+                <span class="eyebrow-glow-dot"></span>
+                <span>DIRECT FOUNDER CHANNEL</span>
+            </div>
+            <h2 id="contact-modal-title" class="editorial-waitlist-title" style="font-size: 32px; margin-bottom: 8px;">Contact Us</h2>
+            <p class="editorial-waitlist-sub" style="margin-bottom: 24px;">Send a message directly to the team. We read and respond to every note.</p>
+
+            <form id="modal-contact-form" class="contact-form" style="width: 100%; text-align: left;" novalidate>
+                <div class="contact-field-row">
+                    <div class="contact-field-group">
+                        <label for="modal-contact-name" class="contact-label">Your Name</label>
+                        <input type="text" id="modal-contact-name" name="name" class="contact-input" placeholder="e.g. Alex Smith" maxlength="100" required autocomplete="name">
+                    </div>
+                    <div class="contact-field-group">
+                        <label for="modal-contact-email" class="contact-label">Email Address</label>
+                        <input type="email" id="modal-contact-email" name="email" class="contact-input" placeholder="name@example.com" maxlength="254" required autocomplete="email">
+                    </div>
+                </div>
+                <div class="contact-field-group">
+                    <label for="modal-contact-message" class="contact-label">Message</label>
+                    <textarea id="modal-contact-message" name="message" class="contact-textarea" placeholder="How can we help?" maxlength="5000" required></textarea>
+                </div>
+                <div id="modal-contact-error" class="contact-inline-error" role="alert" aria-live="polite"></div>
+                <div id="modal-contact-success" class="contact-inline-success" role="status" aria-live="polite"></div>
+                <button type="submit" id="modal-contact-submit-btn" class="contact-submit-btn" style="margin-top: 6px;">
+                    <span class="btn-text">Send Message &rarr;</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Minimal White Griffin-Style Masthead (Home Page Only) -->
     <footer id="about-masthead" class="griffin-masthead">
         <div class="griffin-masthead-inner">
@@ -266,7 +307,7 @@
                     <h4 class="griffin-col-title">Company</h4>
                     <ul class="griffin-link-list">
                         <li><a href="about.html">About</a></li>
-                        <li><a href="mailto:hello@momentumlabs.co.in">Contact Us</a></li>
+                        <li><a href="about.html#contact" class="nav-contact-btn">Contact Us</a></li>
                     </ul>
                 </div>
 
