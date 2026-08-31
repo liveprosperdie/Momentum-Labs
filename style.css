@@ -1555,8 +1555,8 @@ body.in-masthead-view .taskbar-bar {
 
 .griffin-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
-    gap: 36px;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 44px;
 }
 
 .griffin-col {
