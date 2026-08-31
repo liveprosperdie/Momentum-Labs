@@ -1,12 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
+import { Redis } from '@upstash/redis';
 
-// IP-based Rate Limiter (Max 3 submissions per IP per hour)
+// Initialize Upstash Redis client if credentials are configured
+let redis = null;
+if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  });
+}
+
+// IP-based Rate Limiter (Max 3 submissions per IP per 1-hour window)
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
 const MAX_REQUESTS_PER_WINDOW = 3;
 const ipRequestHistory = new Map();
 
-function isRateLimited(ip) {
+function isInMemoryRateLimited(ip) {
   const now = Date.now();
   const timestamps = ipRequestHistory.get(ip) || [];
 
@@ -33,6 +43,30 @@ function isRateLimited(ip) {
   return false;
 }
 
+async function isRateLimited(ip) {
+  // 1. Primary: Upstash Redis (Persistent across serverless instances)
+  if (redis) {
+    try {
+      const key = `ratelimit:waitlist:${ip}`;
+      const count = await redis.incr(key);
+      if (count === 1) {
+        // Set TTL to 1 hour (3600 seconds) on initial request
+        await redis.expire(key, 3600);
+      }
+      if (count > MAX_REQUESTS_PER_WINDOW) {
+        return true;
+      }
+      return false;
+    } catch (redisErr) {
+      console.error('Upstash Redis rate limiter error (falling back to memory):', redisErr);
+      return isInMemoryRateLimited(ip);
+    }
+  }
+
+  // 2. Fallback: In-memory sliding window if Upstash env vars are not set
+  return isInMemoryRateLimited(ip);
+}
+
 function getClientIp(req) {
   const forwardedFor = req.headers['x-forwarded-for'];
   if (forwardedFor && typeof forwardedFor === 'string') {
@@ -49,9 +83,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // 1. IP Rate Limiting Enforcement
+  // 1. IP Rate Limiting Enforcement (Persistent Redis or in-memory fallback)
   const clientIp = getClientIp(req);
-  if (isRateLimited(clientIp)) {
+  const rateLimited = await isRateLimited(clientIp);
+  if (rateLimited) {
     return res.status(429).json({ error: 'Too many requests, please try again later.' });
   }
 
@@ -101,7 +136,7 @@ export default async function handler(req, res) {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // 2. Check for existing signup (Duplicate Prevention -> 409 Conflict)
+    // 3. Check for existing signup (Duplicate Prevention -> 409 Conflict)
     const { data: existingUser, error: checkError } = await supabase
       .from('waitlist')
       .select('id, created_at')
@@ -117,7 +152,7 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: "You're already on the waitlist." });
     }
 
-    // 3. Insert new row into Supabase waitlist (Raw accurate record)
+    // 4. Insert new row into Supabase waitlist (Raw accurate record)
     const { data: newEntry, error: insertError } = await supabase
       .from('waitlist')
       .insert([{ email }])
@@ -129,7 +164,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Unable to join waitlist. Please try again.' });
     }
 
-    // 4. Send generic confirmation email via Resend (No position number shown to user)
+    // 5. Send generic confirmation email via Resend (No position number shown to user)
     if (resendApiKey) {
       try {
         const resend = new Resend(resendApiKey);
