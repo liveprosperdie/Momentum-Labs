@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/waitlist",
+      "destination": "/api/waitlist.js"
+    },
+    {
+      "source": "/api/waitlist-count",
+      "destination": "/api/waitlist-count.js"
+    },
+    {
+      "source": "/api/contact",
+      "destination": "/api/contact.js"
+    }
+  ]
+}
