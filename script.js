@@ -1,7 +1,7 @@
 const canvas = document.getElementById("hero-lightpass");
 const context = canvas ? canvas.getContext("2d") : null;
 
-const frameCount = 92;
+const frameCount = 199;
 const currentFrame = index => (
     `./New folder/frames${(index + 1).toString().padStart(5, '0')}.png`
 );
@@ -12,7 +12,7 @@ const imageObj = {
 };
 
 if (canvas) {
-    // Preload all 92 frames in the opening sequence
+    // Preload all 199 frames in the sequence
     for (let i = 0; i < frameCount; i++) {
         const img = new Image();
         img.src = currentFrame(i);
